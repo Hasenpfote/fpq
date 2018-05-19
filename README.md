@@ -14,5 +14,7 @@ fpq
 
 ## Usage
 
+Please refer to [the reference](https://hasenpfote.github.io/fpq/) for the details.
+
 ## License  
 This software is released under the MIT License, see LICENSE.
