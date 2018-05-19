@@ -3,63 +3,75 @@
 import numpy as np
 
 
-def encode_fp_to_unorm(src, dst, *, nbits):
+def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
     '''Encode floating-points to unsigned normalized integers.
 
     Args:
-        src: The type should be `np.float`, or an array in `np.float`.
-        dst: The type should be `np.uint`.
+        x: The type should be `np.float`, or an array in `np.float`.
+        dtype: The type should be `np.uint`.
         nbits: The number of `dst` bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
     '''
-    assert (0 < nbits <= (dst.itemsize * 8)), '`nbits` value is out of range.'
-    return dst.dtype.type(np.around(src * src.dtype.type((1 << nbits) - 1)))
+    max_nbits = dtype().itemsize * 8
+    if nbits is None:
+        nbits = max_nbits
+    assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    return dtype(np.around(x * x.dtype.type((1 << nbits) - 1)))
 
-def decode_fp_from_unorm(src, dst, *, nbits):
+def decode_fp_from_unorm(x, *, dtype=np.float32, nbits=None):
     '''Decode floating-points from unsigned normalized integers.
 
     Args:
-        src: The type should be `np.uint`, or an array in `np.uint`.
-        dst: The type should be `np.float`.
+        x: The type should be `np.uint`, or an array in `np.uint`.
+        dtype: The type should be `np.float`.
         nbits: The number of `src` bits to use.
 
     Returns:
         The resulting floating-points.
     '''
-    assert (0 < nbits <= (src.itemsize * 8)), '`nbits` value is out of range.'
-    return dst.dtype.type(src) / dst.dtype.type((1 << nbits) - 1)
+    max_nbits = x.itemsize * 8
+    if nbits is None:
+        nbits = max_nbits
+    assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    return dtype(x) / dtype((1 << nbits) - 1)
 
-def encode_fp_to_snorm(src, dst, *, nbits):
+def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     '''Encode floating-points to signed normalized integers.
 
     Args:
-        src: The type should be `np.float`, or an array in `np.float`.
-        dst: The type should be `np.uint`.
+        x: The type should be `np.float`, or an array in `np.float`.
+        dtype: The type should be `np.uint`.
         nbits: The number of `dst` bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
     '''
-    assert (0 < nbits <= (dst.itemsize * 8)), '`nbits` value is out of range.'
-    mask = np.invert(dst.dtype.type(np.iinfo(dst.dtype).max << nbits))
-    return dst.dtype.type(np.around(src * src.dtype.type((1 << (nbits-1)) - 1))) & mask
+    max_nbits = dtype().itemsize * 8
+    if nbits is None:
+        nbits = max_nbits
+    assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    mask = np.invert(dtype(np.iinfo(dtype).max << nbits))
+    return dtype(np.around(x * x.dtype.type((1 << (nbits-1)) - 1))) & mask
 
-def decode_fp_from_snorm(src, dst, *, nbits):
+def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
     '''Decode floating-points from signed normalized integers.
 
     Args:
-        src: The type should be `np.uint`, or an array in `np.uint`.
-        dst: The type should be `np.float`.
+        x: The type should be `np.uint`, or an array in `np.uint`.
+        dtype: The type should be `np.float`.
         nbits: The number of `src` bits to use.
 
     Returns:
         The resulting floating-points.
     '''
-    assert (0 < nbits <= (src.itemsize * 8)), '`nbits` value is out of range.'
-    sign = src >> src.dtype.type(nbits-1)
-    mask = src.dtype.type(np.iinfo(src.dtype).max << (nbits))
-    temp = src | (sign * mask)
-    temp = dst.dtype.type(np.dtype(src.dtype.name[1:]).type(temp)) / dst.dtype.type((1 << (nbits-1)) - 1)
-    return np.maximum(temp, dst.dtype.type(-1.))
+    max_nbits = x.itemsize * 8
+    if nbits is None:
+        nbits = max_nbits
+    assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    sign = x >> x.dtype.type(nbits-1)
+    mask = x.dtype.type(np.iinfo(x.dtype).max << (nbits))
+    temp = x | (sign * mask)
+    temp = dtype(np.dtype(x.dtype.name[1:]).type(temp)) / dtype((1 << (nbits-1)) - 1)
+    return np.maximum(temp, dtype(-1.))
