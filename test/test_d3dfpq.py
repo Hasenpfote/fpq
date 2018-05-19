@@ -53,7 +53,6 @@ class TestD3DFpq(TestCase):
 
     def test_decode_fp_from_snorm(self):
         enc = np.array([0b10000, 0b10001, 0b11100, 0b00000, 0b00100, 0b01111], dtype=np.uint8)
-        print(enc)
         actual = decode_fp_from_snorm(enc, np.float32(), nbits=5)
         expected = np.array([-1., -1., -0.25, 0., 0.25, 1.], dtype=np.float32)
         self.assertTrue(isinstance(actual, np.ndarray)
