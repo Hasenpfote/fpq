@@ -44,10 +44,7 @@ def encode_fp_to_snorm(src, dst, *, nbits):
     '''
     assert (0 < nbits <= (dst.itemsize * 8)), '`nbits` value is out of range.'
     mask = np.invert(dst.dtype.type(np.iinfo(dst.dtype).max << nbits))
-    sign = np.signbit(src)
-    temp = dst.dtype.type(np.around(np.fabs(src) * src.dtype.type((1 << (nbits - 1)) - 1)))
-    temp = (temp * np.logical_not(sign)) | ((np.invert(temp) & mask) * sign)
-    return (sign << dst.dtype.type(nbits - 1)) | temp
+    return dst.dtype.type(np.around(src * src.dtype.type((1 << (nbits-1)) - 1))) & mask
 
 def decode_fp_from_snorm(src, dst, *, nbits):
     '''Decode floating-points from signed normalized integers.
@@ -61,9 +58,8 @@ def decode_fp_from_snorm(src, dst, *, nbits):
         The resulting floating-points.
     '''
     assert (0 < nbits <= (src.itemsize * 8)), '`nbits` value is out of range.'
-    mask = np.invert(src.dtype.type(np.iinfo(src.dtype).max << nbits))
-    sign = (src >> src.dtype.type(nbits - 1)).astype(np.bool)
-    temp = dst.dtype.type((src * np.logical_not(sign)) | ((np.invert(src) + src.dtype.type(1)) & mask) * sign)
-    temp *= (sign * dst.dtype.type(-2.) + dst.dtype.type(1.))
-    temp /= dst.dtype.type((1 << (nbits - 1)) - 1)
-    return np.clip(temp, -1., 1.)
+    sign = src >> src.dtype.type(nbits-1)
+    mask = src.dtype.type(np.iinfo(src.dtype).max << (nbits))
+    temp = src | (sign * mask)
+    temp = dst.dtype.type(np.dtype(src.dtype.name[1:]).type(temp)) / dst.dtype.type((1 << (nbits-1)) - 1)
+    return np.maximum(temp, dst.dtype.type(-1.))
