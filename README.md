@@ -1,4 +1,5 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+[![Build Status](https://travis-ci.org/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.org/Hasenpfote/fpq)  
 
 fpq
 ===
