@@ -20,6 +20,14 @@ fpq\.fpq module
     :undoc-members:
     :show-inheritance:
 
+fpq\.quaternion module
+----------------------
+
+.. automodule:: fpq.quaternion
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 fpq\.utils module
 -----------------
 

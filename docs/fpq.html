@@ -303,6 +303,63 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-fpq.quaternion">
+<span id="fpq-quaternion-module"></span><h2>fpq.quaternion module<a class="headerlink" href="#module-fpq.quaternion" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="fpq.quaternion.decode_quat_from_uint32">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">decode_quat_from_uint32</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>decoder=&lt;function decode_fp_from_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.decode_quat_from_uint32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode Quaternion from uint32.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – Should be represented by uint32, or an array of them.</li>
+<li><strong>decoder</strong> – This is a function decodes an unsigned integer to a floating point.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting Quaternion.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fpq.quaternion.encode_quat_to_uint32">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">encode_quat_to_uint32</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>encoder=&lt;function encode_fp_to_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.encode_quat_to_uint32" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode Quaternion to uint32.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>q</strong> – Should be represented by four components of float32, or an array of them.</li>
+<li><strong>encoder</strong> – This is a function encodes a floating point to an unsigned integer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting uint32.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="fpq.quaternion.get_max_component_indices">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">get_max_component_indices</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.get_max_component_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the maximum component indices.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fpq.quaternion.remove_max_component">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">remove_max_component</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.remove_max_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the maximum component.</p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-fpq.utils">
 <span id="fpq-utils-module"></span><h2>fpq.utils module<a class="headerlink" href="#module-fpq.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
