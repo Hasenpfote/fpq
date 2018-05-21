@@ -14,6 +14,8 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
     Returns:
         The resulting unsigned normalized integers.
     '''
+    assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
+    assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
     max_nbits = dtype().itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -31,6 +33,8 @@ def decode_fp_from_unorm(x, *, dtype=np.float32, nbits=None):
     Returns:
         The resulting floating-points.
     '''
+    assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
     max_nbits = x.itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -48,6 +52,8 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     Returns:
         The resulting unsigned normalized integers.
     '''
+    assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
+    assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
     max_nbits = dtype().itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -66,6 +72,8 @@ def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
     Returns:
         The resulting floating-points.
     '''
+    assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
     max_nbits = x.itemsize * 8
     if nbits is None:
         nbits = max_nbits

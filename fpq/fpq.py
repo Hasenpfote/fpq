@@ -24,6 +24,8 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
         >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
         >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
    '''
+    assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
+    assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
     max_nbits = dtype().itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -54,6 +56,8 @@ def decode_fp_from_unorm(x, *, dtype=np.float32, nbits=None):
         >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
         >>> dec = decode_fp_from_unorm(enc, dtype=np.float32, nbits=16)
     '''
+    assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
     max_nbits = x.itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -81,6 +85,8 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
         >>> fp = np.array([[-1.0, -0.5, 0., 0.5, 1.], [1.0, 0.5, 0., -0.5, -1.]], dtype=np.float32)
         >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
     '''
+    assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
+    assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
     max_nbits = dtype().itemsize * 8
     if nbits is None:
         nbits = max_nbits
@@ -113,6 +119,8 @@ def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
         >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
         >>> dec = decode_fp_from_snorm(enc, dtype=np.float32, nbits=16)
     '''
+    assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
     max_nbits = x.itemsize * 8
     if nbits is None:
         nbits = max_nbits
