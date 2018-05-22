@@ -13,17 +13,7 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
 
     Returns:
         The resulting unsigned normalized integers.
-
-    Examples:
-        >>> fp = np.float32(1.)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-
-        >>> fp = np.array([0., 0.5, 1.], dtype=np.float32)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-
-        >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-   '''
+    '''
     assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
     assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
     max_nbits = dtype().itemsize * 8
@@ -32,8 +22,8 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
     return dtype(np.around(x * x.dtype.type((1 << nbits) - 1)))
 
-def decode_fp_from_unorm(x, *, dtype=np.float32, nbits=None):
-    '''Decode floating-points from unsigned normalized integers.
+def decode_unorm_to_fp(x, *, dtype=np.float32, nbits=None):
+    '''Decode unsigned normalized integers to floating-points.
 
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
@@ -42,19 +32,6 @@ def decode_fp_from_unorm(x, *, dtype=np.float32, nbits=None):
 
     Returns:
         The resulting floating-points.
-
-    Examples:
-        >>> fp = np.float32(1.)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_unorm(enc, dtype=np.float32, nbits=16)
-
-        >>> fp = np.array([0., 0.5, 1.], dtype=np.float32)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_unorm(enc, dtype=np.float32, nbits=16)
-
-        >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
-        >>> enc = encode_fp_to_unorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_unorm(enc, dtype=np.float32, nbits=16)
     '''
     assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
     assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
@@ -74,16 +51,6 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
 
     Returns:
         The resulting unsigned normalized integers.
-
-    Examples:
-        >>> fp = np.float32(-1.)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
-
-        >>> fp = np.array([-1.0, -0.5, 0., 0.5, 1.], dtype=np.float32)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
-
-        >>> fp = np.array([[-1.0, -0.5, 0., 0.5, 1.], [1.0, 0.5, 0., -0.5, -1.]], dtype=np.float32)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
     '''
     assert (x.dtype.kind == 'f'), '`dtype` of the argument `x` must be floating point types.'
     assert (dtype().dtype.kind == 'u'), '`dtype` of the argument `dtype` must be unsigned integer types.'
@@ -91,12 +58,11 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
-    sign = np.signbit(x)
-    enc = encode_fp_to_unorm(np.fabs(x), dtype=dtype, nbits=nbits-1)
-    return sign | (enc << dtype(1))
+    mask = np.invert(dtype(np.iinfo(nbits).max) << dtype(nbits))
+    return dtype(np.around(x * x.dtype.type((1 << (nbits-1)) - 1))) & mask
 
-def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
-    '''Decode floating-points from signed normalized integers.
+def decode_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
+    '''Decode signed normalized integers to floating-points.
 
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
@@ -105,19 +71,6 @@ def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
 
     Returns:
         The resulting floating-points.
-
-    Examples:
-        >>> fp = np.float32(-1.)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_snorm(enc, dtype=np.float32, nbits=16)
-
-        >>> fp = np.array([-1.0, -0.5, 0., 0.5, 1.], dtype=np.float32)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_snorm(enc, dtype=np.float32, nbits=16)
-
-        >>> fp = np.array([[-1.0, -0.5, 0., 0.5, 1.], [1.0, 0.5, 0., -0.5, -1.]], dtype=np.float32)
-        >>> enc = encode_fp_to_snorm(fp, dtype=np.uint16, nbits=16)
-        >>> dec = decode_fp_from_snorm(enc, dtype=np.float32, nbits=16)
     '''
     assert (x.dtype.kind == 'u'), '`dtype` of the argument `x` must be unsigned integer types.'
     assert (dtype().dtype.kind == 'f'), '`dtype` of the argument `dtype` must be floating point types.'
@@ -125,6 +78,8 @@ def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
-    dec = decode_fp_from_unorm(x >> x.dtype.type(1), dtype=dtype, nbits=nbits-1)
-    sign = dtype(x & x.dtype.type(0x1)) * dtype(-2.) + dtype(1.)
-    return dec * sign
+    sign = x >> x.dtype.type(nbits-1)
+    mask = x.dtype.type(np.iinfo(x.dtype).max) << x.dtype.type(nbits)
+    temp = x | (sign * mask)
+    temp = dtype(np.dtype(x.dtype.name[1:]).type(temp)) / dtype((1 << (nbits-1)) - 1)
+    return np.maximum(temp, dtype(-1.))

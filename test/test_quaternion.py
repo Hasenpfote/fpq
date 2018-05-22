@@ -7,7 +7,7 @@ import numpy as np
 import sys
 sys.path.append('../')
 from fpq.quaternion import *
-import fpq.d3dfpq
+import fpq.d3d
 
 
 class TestQuaternion(TestCase):
@@ -82,16 +82,16 @@ class TestQuaternion(TestCase):
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.uint32)
 
-    def test_decode_quat_from_uint(self):
+    def test_decode_uint_to_quat(self):
         q = np.uint32(133169152)
-        actual = decode_quat_from_uint(q, dtype=np.float32)
+        actual = decode_uint_to_quat(q, dtype=np.float32)
         expected = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.float32)
         self.assertTrue(self.quat_are_same_rotation(actual, expected, atol=1e-06))
 
         q = np.array([133169152, 1831862272, 2905604096, 3979345920], dtype=np.uint32)
-        actual = decode_quat_from_uint(q, dtype=np.float32)
+        actual = decode_uint_to_quat(q, dtype=np.float32)
         expected = np.array([self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)),   # max: |w|
                              self.quat_from_axis_angle([1., 0., 0.], math.radians(-120.)),  # max: |x|
                              self.quat_from_axis_angle([0., 1., 0.], math.radians(-120.)),  # max: |y|
@@ -104,8 +104,8 @@ class TestQuaternion(TestCase):
         self.assertTrue(self.quat_are_same_rotation(actual[2], expected[2], atol=1e-06))
         self.assertTrue(self.quat_are_same_rotation(actual[3], expected[3], atol=1e-06))
 
-    def test_encode_quat_to_uint_by_d3dfpq(self):
-        encoder = fpq.d3dfpq.encode_fp_to_snorm
+    def test_encode_quat_to_uint_by_d3d(self):
+        encoder = fpq.d3d.encode_fp_to_snorm
 
         q = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
         actual = encode_quat_to_uint(q, dtype=np.uint32, encoder=encoder)
@@ -113,11 +113,11 @@ class TestQuaternion(TestCase):
         self.assertTrue(isinstance(actual, np.uint32))
         self.assertTrue(np.array_equal(actual, expected))
 
-    def test_decode_quat_from_uint_by_d3dfpq(self):
-        decoder = fpq.d3dfpq.decode_fp_from_snorm
+    def test_decode_uint_to_quat_by_d3d(self):
+        decoder = fpq.d3d.decode_snorm_to_fp
 
         q = np.uint32(1007681536)
-        actual = decode_quat_from_uint(q, dtype=np.float32, decoder=decoder)
+        actual = decode_uint_to_quat(q, dtype=np.float32, decoder=decoder)
         expected = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.float32)
@@ -126,6 +126,6 @@ class TestQuaternion(TestCase):
     def test_enc_dec(self):
         q = np.array([self.quat_random() for _ in range(100)], dtype=np.float64)
         enc = encode_quat_to_uint(q, dtype=np.uint64)
-        dec = decode_quat_from_uint(enc, dtype=np.float64)
+        dec = decode_uint_to_quat(enc, dtype=np.float64)
         for src, dst in zip(q, dec):
             self.assertTrue(self.quat_are_same_rotation(src, dst))

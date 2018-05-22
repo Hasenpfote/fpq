@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from . import utils
-from . import fpq
+from . import generic
 
 def get_max_component_indices(x):
     '''Get the maximum component indices.'''
@@ -18,7 +18,7 @@ def remove_component(x, *, indices):
     shape = x.shape[:-1] + (x.shape[-1] - 1,)
     return ma.compressed().reshape(shape)
 
-def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
+def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=generic.encode_fp_to_snorm):
     '''Encode Quaternions to unsigned integers.
 
     Args:
@@ -53,8 +53,8 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
            | enc[..., 2]
 
 
-def decode_quat_from_uint(q, *, dtype=np.float64, decoder=fpq.decode_fp_from_snorm):
-    '''Decode Quaternions from unsigned integers.
+def decode_uint_to_quat(q, *, dtype=np.float64, decoder=generic.decode_snorm_to_fp):
+    '''Decode unsigned integers to Quaternions.
 
     Args:
         q: Should be represented by uint, or an array of them.
