@@ -58,7 +58,7 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
-    mask = np.invert(dtype(np.iinfo(nbits).max) << dtype(nbits))
+    mask = np.invert(dtype(np.iinfo(dtype).max) << dtype(nbits))
     return dtype(np.around(x * x.dtype.type((1 << (nbits-1)) - 1))) & mask
 
 def decode_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
