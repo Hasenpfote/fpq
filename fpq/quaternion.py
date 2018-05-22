@@ -11,11 +11,10 @@ def get_max_component_indices(x):
     shape = (ind2.shape[0]+1,) + ind2.shape[1:]
     return tuple(np.append(ind2, ind1).reshape(shape))
 
-def remove_max_component(x):
-    '''Remove the maximum component.'''
+def remove_component(x, *, indices):
+    '''Removes a component at the specified index.'''
     ma = np.ma.array(x, mask=False)
-    ind = get_max_component_indices(x)
-    ma.mask[ind] = True
+    ma.mask[indices] = True
     shape = x.shape[:-1] + (x.shape[-1] - 1,)
     return ma.compressed().reshape(shape)
 
@@ -37,10 +36,9 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
 
     nbits_per_component = ((dtype().dtype.itemsize * 8) - 2) // 3
 
-    abs_q = np.fabs(q)
-    max_abs_ind = get_max_component_indices(abs_q)
+    max_abs_ind = get_max_component_indices(np.fabs(q))
     sign = np.where(q[max_abs_ind] < 0., -1., 1.)
-    remaining = sign[..., None] * remove_max_component(abs_q)
+    remaining = sign[..., None] * remove_component(q, indices=max_abs_ind)
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
     src_max = np.reciprocal(np.sqrt(q.dtype.type(2.)))
