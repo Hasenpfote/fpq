@@ -19,21 +19,21 @@ def remove_max_component(x):
     shape = x.shape[:-1] + (x.shape[-1] - 1,)
     return ma.compressed().reshape(shape)
 
-def encode_quat_to_uint32(q, *, encoder=fpq.encode_fp_to_snorm):
-    '''Encode Quaternion to uint32.
-
+def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
+    '''Encode Quaternions to unsigned integers.
     Args:
-        q: Should be represented by four components of float32, or an array of them.
+        q: Should be represented by four components of float, or an array of them.
+        dtype: The type should be unsigned integer types.
         encoder: This is a function encodes a floating point to an unsigned integer.
-
     Returns:
-        The resulting uint32.
+        The resulting unsigned integers.
     '''
-    src_dtype = np.float32
-    dst_dtype = np.uint32
-    assert (isinstance(q, src_dtype)
-            or (isinstance(q, np.ndarray) and (q.dtype == src_dtype))), \
-        'The type should be {0}, or an array in {0}.'.format(src_dtype().dtype.name)
+    assert (isinstance(q, np.ndarray) and (q.dtype.kind == 'f')), \
+        '`dtype` of the argument `q` should be floating point types.'
+    assert (dtype().dtype.kind == 'u'), \
+        '`dtype` of the argument `dtype` should be unsigned integer types.'
+
+    nbits_per_component = ((dtype().dtype.itemsize * 8) - 2) // 3
 
     abs_q = np.fabs(q)
     max_abs_ind = get_max_component_indices(abs_q)
@@ -41,45 +41,50 @@ def encode_quat_to_uint32(q, *, encoder=fpq.encode_fp_to_snorm):
     remaining = sign[..., None] * remove_max_component(abs_q)
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
-    src_max = np.reciprocal(np.sqrt(src_dtype(2.)))
+    src_max = np.reciprocal(np.sqrt(q.dtype.type(2.)))
     src_min = -src_max
-    remapped = utils.remap(remaining, src_min, src_max, src_dtype(-1.), src_dtype(1.))
+    remapped = utils.remap(remaining, src_min, src_max, q.dtype.type(-1.), q.dtype.type(1.))
 
-    enc = encoder(remapped, dtype=dst_dtype, nbits=10)
+    enc = encoder(remapped, dtype=dtype, nbits=nbits_per_component)
 
-    return (dst_dtype(max_abs_ind[-1]) << dst_dtype(30)) | (enc[..., 0] << dst_dtype(20)) \
-           | (enc[..., 1] << dst_dtype(10)) | enc[..., 2]
+    return (dtype(max_abs_ind[-1]) << dtype(nbits_per_component * 3)) \
+           | (enc[..., 0] << dtype(nbits_per_component * 2)) \
+           | (enc[..., 1] << dtype(nbits_per_component)) \
+           | enc[..., 2]
 
-def decode_quat_from_uint32(q, *, decoder=fpq.decode_fp_from_snorm):
-    '''Decode Quaternion from uint32.
 
+def decode_quat_from_uint(q, *, dtype=np.float64, decoder=fpq.decode_fp_from_snorm):
+    '''Decode Quaternions from unsigned integers.
     Args:
-        q: Should be represented by uint32, or an array of them.
+        q: Should be represented by uint, or an array of them.
+        dtype: The type should be floating point types.
         decoder: This is a function decodes an unsigned integer to a floating point.
-
     Returns:
-        The resulting Quaternion.
+        The resulting Quaternions.
     '''
-    src_dtype = np.uint32
-    dst_dtype = np.float32
-    assert (isinstance(q, src_dtype)
-            or (isinstance(q, np.ndarray) and (q.dtype == src_dtype))), \
-        'The type should be {0}, or an array in {0}.'.format(src_dtype().dtype.name)
+    assert (q.dtype.kind == 'u'), \
+        '`dtype` of the argument `q` should be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), \
+        '`dtype` of the argument `dtype` should be floating point types.'
 
-    mask = src_dtype(0x3ff)
-    c1 = decoder((q >> src_dtype(20)) & mask, dtype=dst_dtype, nbits=10)
-    c2 = decoder((q >> src_dtype(10)) & mask, dtype=dst_dtype, nbits=10)
-    c3 = decoder(q & mask, dtype=dst_dtype, nbits=10)
+    bits_per_component = ((q.dtype.itemsize * 8) - 2) // 3
+    mask = np.invert(q.dtype.type(np.iinfo(q.dtype).max) << q.dtype.type(bits_per_component))
+
+    c1 = decoder((q >> q.dtype.type(bits_per_component * 2)) & mask,
+                 dtype=dtype, nbits=bits_per_component)
+    c2 = decoder((q >> q.dtype.type(bits_per_component)) & mask,
+                 dtype=dtype, nbits=bits_per_component)
+    c3 = decoder(q & mask, dtype=dtype, nbits=bits_per_component)
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
-    src_max = np.reciprocal(np.sqrt(dst_dtype(2.)))
+    src_max = np.reciprocal(np.sqrt(dtype(2.)))
     src_min = -src_max
-    c1 = utils.remap(c1, dst_dtype(-1.), dst_dtype(1.), src_min, src_max)
-    c2 = utils.remap(c2, dst_dtype(-1.), dst_dtype(1.), src_min, src_max)
-    c3 = utils.remap(c3, dst_dtype(-1.), dst_dtype(1.), src_min, src_max)
-    c0 = np.sqrt(dst_dtype(1.) - np.square(c1) - np.square(c2) - np.square(c3))
+    c1 = utils.remap(c1, dtype(-1.), dtype(1.), src_min, src_max)
+    c2 = utils.remap(c2, dtype(-1.), dtype(1.), src_min, src_max)
+    c3 = utils.remap(c3, dtype(-1.), dtype(1.), src_min, src_max)
+    c0 = np.sqrt(dtype(1.) - np.square(c1) - np.square(c2) - np.square(c3))
 
-    max_c = q >> src_dtype(30)
+    max_c = q >> q.dtype.type(bits_per_component * 3)
     return np.where(max_c == 0, (c0, c1, c2, c3),
                     np.where(max_c == 1, (c1, c0, c2, c3),
                              np.where(max_c == 2, (c1, c2, c0, c3), (c1, c2, c3, c0)))).transpose()

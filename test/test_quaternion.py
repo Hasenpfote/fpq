@@ -54,7 +54,7 @@ class TestQuaternion(TestCase):
 
     def test_encode_quat_to_uint32(self):
         q = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
-        actual = encode_quat_to_uint32(q)
+        actual = encode_quat_to_uint(q, dtype=np.uint32)
         expected = np.uint32(133169152)
         self.assertTrue(isinstance(actual, np.uint32))
         self.assertTrue(np.array_equal(actual, expected))
@@ -64,21 +64,21 @@ class TestQuaternion(TestCase):
                       self.quat_from_axis_angle([0., 1., 0.], math.radians(-120.)),  # max: |y|
                       self.quat_from_axis_angle([0., 0., 1.], math.radians(-120.))], # max: |z|
                      dtype=np.float32)
-        actual = encode_quat_to_uint32(q)
+        actual = encode_quat_to_uint(q, dtype=np.uint32)
         expected = np.array([133169152, 1831862272, 2905604096, 3979345920], dtype=np.uint32)
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.uint32)
 
     def test_decode_quat_from_uint32(self):
         q = np.uint32(133169152)
-        actual = decode_quat_from_uint32(q)
+        actual = decode_quat_from_uint(q, dtype=np.float32)
         expected = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.float32)
         self.assertTrue(self.quat_are_same_rotation(actual, expected, atol=1e-06))
 
         q = np.array([133169152, 1831862272, 2905604096, 3979345920], dtype=np.uint32)
-        actual = decode_quat_from_uint32(q)
+        actual = decode_quat_from_uint(q, dtype=np.float32)
         expected = np.array([self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)),   # max: |w|
                              self.quat_from_axis_angle([1., 0., 0.], math.radians(-120.)),  # max: |x|
                              self.quat_from_axis_angle([0., 1., 0.], math.radians(-120.)),  # max: |y|
@@ -95,7 +95,7 @@ class TestQuaternion(TestCase):
         encoder = fpq.d3dfpq.encode_fp_to_snorm
 
         q = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
-        actual = encode_quat_to_uint32(q, encoder=encoder)
+        actual = encode_quat_to_uint(q, dtype=np.uint32, encoder=encoder)
         expected = np.uint32(1007681536)
         self.assertTrue(isinstance(actual, np.uint32))
         self.assertTrue(np.array_equal(actual, expected))
@@ -104,7 +104,7 @@ class TestQuaternion(TestCase):
         decoder = fpq.d3dfpq.decode_fp_from_snorm
 
         q = np.uint32(1007681536)
-        actual = decode_quat_from_uint32(q, decoder=decoder)
+        actual = decode_quat_from_uint(q, dtype=np.float32, decoder=decoder)
         expected = np.array(self.quat_from_axis_angle([1., 0., 0.], math.radians(350.)), dtype=np.float32)
         self.assertTrue(isinstance(actual, np.ndarray))
         self.assertTrue(actual.dtype == np.float32)
