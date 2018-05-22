@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fpq package &#8212; fpq 0.1.0 documentation</title>
+    <title>fpq package &#8212; fpq 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -63,12 +63,12 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-fpq.d3dfpq">
-<span id="fpq-d3dfpq-module"></span><h2>fpq.d3dfpq module<a class="headerlink" href="#module-fpq.d3dfpq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-fpq.d3d">
+<span id="fpq-d3d-module"></span><h2>fpq.d3d module<a class="headerlink" href="#module-fpq.d3d" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="fpq.d3dfpq.decode_fp_from_snorm">
-<code class="descclassname">fpq.d3dfpq.</code><code class="descname">decode_fp_from_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3dfpq.decode_fp_from_snorm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode floating-points from signed normalized integers.</p>
+<dt id="fpq.d3d.decode_snorm_to_fp">
+<code class="descclassname">fpq.d3d.</code><code class="descname">decode_snorm_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3d.decode_snorm_to_fp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode signed normalized integers to floating-points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -88,9 +88,9 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.d3dfpq.decode_fp_from_unorm">
-<code class="descclassname">fpq.d3dfpq.</code><code class="descname">decode_fp_from_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3dfpq.decode_fp_from_unorm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode floating-points from unsigned normalized integers.</p>
+<dt id="fpq.d3d.decode_unorm_to_fp">
+<code class="descclassname">fpq.d3d.</code><code class="descname">decode_unorm_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3d.decode_unorm_to_fp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode unsigned normalized integers to floating-points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -110,8 +110,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.d3dfpq.encode_fp_to_snorm">
-<code class="descclassname">fpq.d3dfpq.</code><code class="descname">encode_fp_to_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3dfpq.encode_fp_to_snorm" title="Permalink to this definition">¶</a></dt>
+<dt id="fpq.d3d.encode_fp_to_snorm">
+<code class="descclassname">fpq.d3d.</code><code class="descname">encode_fp_to_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3d.encode_fp_to_snorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode floating-points to signed normalized integers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -132,8 +132,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.d3dfpq.encode_fp_to_unorm">
-<code class="descclassname">fpq.d3dfpq.</code><code class="descname">encode_fp_to_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3dfpq.encode_fp_to_unorm" title="Permalink to this definition">¶</a></dt>
+<dt id="fpq.d3d.encode_fp_to_unorm">
+<code class="descclassname">fpq.d3d.</code><code class="descname">encode_fp_to_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.d3d.encode_fp_to_unorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode floating-points to unsigned normalized integers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,12 +154,12 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-fpq.fpq">
-<span id="fpq-fpq-module"></span><h2>fpq.fpq module<a class="headerlink" href="#module-fpq.fpq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-fpq.generic">
+<span id="fpq-generic-module"></span><h2>fpq.generic module<a class="headerlink" href="#module-fpq.generic" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="fpq.fpq.decode_fp_from_snorm">
-<code class="descclassname">fpq.fpq.</code><code class="descname">decode_fp_from_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.fpq.decode_fp_from_snorm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode floating-points from signed normalized integers.</p>
+<dt id="fpq.generic.decode_snorm_to_fp">
+<code class="descclassname">fpq.generic.</code><code class="descname">decode_snorm_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.decode_snorm_to_fp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode signed normalized integers to floating-points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -179,25 +179,25 @@
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_snorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_snorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_snorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_snorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_snorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_snorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_snorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_snorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_snorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.fpq.decode_fp_from_unorm">
-<code class="descclassname">fpq.fpq.</code><code class="descname">decode_fp_from_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.fpq.decode_fp_from_unorm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode floating-points from unsigned normalized integers.</p>
+<dt id="fpq.generic.decode_unorm_to_fp">
+<code class="descclassname">fpq.generic.</code><code class="descname">decode_unorm_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.decode_unorm_to_fp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode unsigned normalized integers to floating-points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -217,24 +217,24 @@
 <p class="rubric">Examples</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_unorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_unorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_unorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_unorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_unorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_unorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_unorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_fp_from_unorm</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">decode_unorm_to_fp</span><span class="p">(</span><span class="n">enc</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.fpq.encode_fp_to_snorm">
-<code class="descclassname">fpq.fpq.</code><code class="descname">encode_fp_to_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.fpq.encode_fp_to_snorm" title="Permalink to this definition">¶</a></dt>
+<dt id="fpq.generic.encode_fp_to_snorm">
+<code class="descclassname">fpq.generic.</code><code class="descname">encode_fp_to_snorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.encode_fp_to_snorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode floating-points to signed normalized integers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -268,8 +268,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.fpq.encode_fp_to_unorm">
-<code class="descclassname">fpq.fpq.</code><code class="descname">encode_fp_to_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.fpq.encode_fp_to_unorm" title="Permalink to this definition">¶</a></dt>
+<dt id="fpq.generic.encode_fp_to_unorm">
+<code class="descclassname">fpq.generic.</code><code class="descname">encode_fp_to_unorm</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint8'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.encode_fp_to_unorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode floating-points to unsigned normalized integers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -306,9 +306,9 @@
 <div class="section" id="module-fpq.quaternion">
 <span id="fpq-quaternion-module"></span><h2>fpq.quaternion module<a class="headerlink" href="#module-fpq.quaternion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="fpq.quaternion.decode_quat_from_uint">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">decode_quat_from_uint</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float64'&gt;</em>, <em>decoder=&lt;function decode_fp_from_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.decode_quat_from_uint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode Quaternions from unsigned integers.</p>
+<dt id="fpq.quaternion.decode_uint_to_quat">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">decode_uint_to_quat</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float64'&gt;</em>, <em>decoder=&lt;function decode_snorm_to_fp&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.decode_uint_to_quat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode unsigned integers to Quaternions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -356,9 +356,9 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.quaternion.remove_max_component">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">remove_max_component</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.remove_max_component" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the maximum component.</p>
+<dt id="fpq.quaternion.remove_component">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">remove_component</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.remove_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a component at the specified index.</p>
 </dd></dl>
 
 </div>
@@ -410,7 +410,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

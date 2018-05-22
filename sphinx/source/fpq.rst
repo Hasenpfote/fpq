@@ -4,18 +4,18 @@ fpq package
 Submodules
 ----------
 
-fpq\.d3dfpq module
-------------------
+fpq\.d3d module
+---------------
 
-.. automodule:: fpq.d3dfpq
+.. automodule:: fpq.d3d
     :members:
     :undoc-members:
     :show-inheritance:
 
-fpq\.fpq module
----------------
+fpq\.generic module
+-------------------
 
-.. automodule:: fpq.fpq
+.. automodule:: fpq.generic
     :members:
     :undoc-members:
     :show-inheritance:
