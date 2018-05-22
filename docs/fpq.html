@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fpq package &#8212; fpq 0.0.1 documentation</title>
+    <title>fpq package &#8212; fpq 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.1',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -306,42 +306,34 @@
 <div class="section" id="module-fpq.quaternion">
 <span id="fpq-quaternion-module"></span><h2>fpq.quaternion module<a class="headerlink" href="#module-fpq.quaternion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="fpq.quaternion.decode_quat_from_uint32">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">decode_quat_from_uint32</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>decoder=&lt;function decode_fp_from_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.decode_quat_from_uint32" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode Quaternion from uint32.</p>
+<dt id="fpq.quaternion.decode_quat_from_uint">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">decode_quat_from_uint</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float64'&gt;</em>, <em>decoder=&lt;function decode_fp_from_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.decode_quat_from_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode Quaternions from unsigned integers.
+:param q: Should be represented by uint, or an array of them.
+:param dtype: The type should be floating point types.
+:param decoder: This is a function decodes an unsigned integer to a floating point.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>q</strong> – Should be represented by uint32, or an array of them.</li>
-<li><strong>decoder</strong> – This is a function decodes an unsigned integer to a floating point.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting Quaternion.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The resulting Quaternions.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="function">
-<dt id="fpq.quaternion.encode_quat_to_uint32">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">encode_quat_to_uint32</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>encoder=&lt;function encode_fp_to_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.encode_quat_to_uint32" title="Permalink to this definition">¶</a></dt>
-<dd><p>Encode Quaternion to uint32.</p>
+<dt id="fpq.quaternion.encode_quat_to_uint">
+<code class="descclassname">fpq.quaternion.</code><code class="descname">encode_quat_to_uint</code><span class="sig-paren">(</span><em>q</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint64'&gt;</em>, <em>encoder=&lt;function encode_fp_to_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.encode_quat_to_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode Quaternions to unsigned integers.
+:param q: Should be represented by four components of float, or an array of them.
+:param dtype: The type should be unsigned integer types.
+:param encoder: This is a function encodes a floating point to an unsigned integer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>q</strong> – Should be represented by four components of float32, or an array of them.</li>
-<li><strong>encoder</strong> – This is a function encodes a floating point to an unsigned integer.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting uint32.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The resulting unsigned integers.</td>
 </tr>
 </tbody>
 </table>
@@ -408,7 +400,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
