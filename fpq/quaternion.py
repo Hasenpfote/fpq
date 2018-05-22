@@ -21,10 +21,12 @@ def remove_max_component(x):
 
 def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
     '''Encode Quaternions to unsigned integers.
+
     Args:
         q: Should be represented by four components of float, or an array of them.
         dtype: The type should be unsigned integer types.
         encoder: This is a function encodes a floating point to an unsigned integer.
+
     Returns:
         The resulting unsigned integers.
     '''
@@ -55,10 +57,12 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fpq.encode_fp_to_snorm):
 
 def decode_quat_from_uint(q, *, dtype=np.float64, decoder=fpq.decode_fp_from_snorm):
     '''Decode Quaternions from unsigned integers.
+
     Args:
         q: Should be represented by uint, or an array of them.
         dtype: The type should be floating point types.
         decoder: This is a function decodes an unsigned integer to a floating point.
+
     Returns:
         The resulting Quaternions.
     '''
