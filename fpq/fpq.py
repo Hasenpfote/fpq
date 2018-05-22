@@ -126,5 +126,5 @@ def decode_fp_from_snorm(x, *, dtype=np.float32, nbits=None):
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
     dec = decode_fp_from_unorm(x >> x.dtype.type(1), dtype=dtype, nbits=nbits-1)
-    sign = dtype(x & 0x1) * dtype(-2.) + dtype(1.)
+    sign = dtype(x & x.dtype.type(0x1)) * dtype(-2.) + dtype(1.)
     return dec * sign
