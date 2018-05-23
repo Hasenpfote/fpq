@@ -31,6 +31,8 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    assert (nbits <= (np.finfo(x.dtype).bits - np.finfo(x.dtype).iexp)), \
+        'Can\'t be expressed with the specified number of bits.'
 
     max_uint = dtype(np.iinfo(dtype).max) >> dtype(max_nbits - nbits)
     return dtype(np.around(x * x.dtype.type(max_uint)))
@@ -66,6 +68,8 @@ def decode_unorm_to_fp(x, *, dtype=np.float32, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
+    assert (nbits <= (np.finfo(dtype).bits - np.finfo(dtype).iexp)), \
+        'Can\'t be expressed with the specified number of bits.'
 
     max_uint = x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits)
     return dtype(x) / dtype(max_uint)
@@ -98,6 +102,8 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (1 < nbits <= max_nbits), '`nbits` value is out of range.'
+    assert (nbits <= (np.finfo(x.dtype).bits - np.finfo(x.dtype).iexp + 1)), \
+        'Can\'t be expressed with the specified number of bits.'
 
     sign = np.signbit(x)
     enc = encode_fp_to_unorm(np.fabs(x), dtype=dtype, nbits=nbits-1)
@@ -134,6 +140,8 @@ def decode_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (1 < nbits <= max_nbits), '`nbits` value is out of range.'
+    assert (nbits <= (np.finfo(dtype).bits - np.finfo(dtype).iexp + 1)), \
+        'Can\'t be expressed with the specified number of bits.'
 
     dec = decode_unorm_to_fp(x >> x.dtype.type(1), dtype=dtype, nbits=nbits-1)
     sign = dtype(x & x.dtype.type(0x1)) * dtype(-2.) + dtype(1.)
