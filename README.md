@@ -12,12 +12,15 @@ This package provides modules for manipulating floating-points quantization.
 
 ## Installation  
 ```
+pip install git+https://github.com/Hasenpfote/fpq
+```
+or
+```
 python setup.py install
 ```
 
 ## Usage
-```python
-```
+[examples](example/)
 
 Please refer to [the reference](https://hasenpfote.github.io/fpq/) for the details.
 
