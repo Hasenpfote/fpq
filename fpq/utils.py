@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import numpy as np
 
 def remap(value, src_min, src_max, dst_min, dst_max):
     '''Maps values from [`src_min`, `src_max`]  to [`dst_min`, `dst_max`].
@@ -18,3 +18,7 @@ def remap(value, src_min, src_max, dst_min, dst_max):
     Examples:
     '''
     return (((value - src_min) / (src_max - src_min)) * (dst_max - dst_min)) + dst_min
+
+def _can_express_norm(nbits, dtype):
+    '''Can express normalized integers?'''
+    return nbits <= (1 + np.finfo(dtype).nmant)

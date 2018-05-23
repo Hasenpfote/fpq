@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
+from . import utils
 
 
 def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
@@ -21,7 +22,7 @@ def encode_fp_to_unorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
-    assert (nbits <= (np.finfo(x.dtype).bits - np.finfo(x.dtype).iexp)), \
+    assert utils._can_express_norm(nbits, x.dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
     max_uint = dtype(np.iinfo(dtype).max) >> dtype(max_nbits - nbits)
@@ -45,7 +46,7 @@ def decode_unorm_to_fp(x, *, dtype=np.float32, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (0 < nbits <= max_nbits), '`nbits` value is out of range.'
-    assert (nbits <= (np.finfo(dtype).bits - np.finfo(dtype).iexp)), \
+    assert utils._can_express_norm(nbits, dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
     max_uint = x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits)
@@ -69,7 +70,7 @@ def encode_fp_to_snorm(x, *, dtype=np.uint8, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (1 < nbits <= max_nbits), '`nbits` value is out of range.'
-    assert (nbits <= (np.finfo(x.dtype).bits - np.finfo(x.dtype).iexp + 1)), \
+    assert utils._can_express_norm(nbits-1, x.dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
     mask = dtype(np.iinfo(dtype).max) >> dtype(max_nbits - nbits)
@@ -94,7 +95,7 @@ def decode_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     if nbits is None:
         nbits = max_nbits
     assert (1 < nbits <= max_nbits), '`nbits` value is out of range.'
-    assert (nbits <= (np.finfo(dtype).bits - np.finfo(dtype).iexp + 1)), \
+    assert utils._can_express_norm(nbits-1, dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
     sign = x >> x.dtype.type(nbits-1)
