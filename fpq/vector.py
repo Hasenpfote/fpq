@@ -5,13 +5,13 @@ from . import utils
 from . import generic
 
 
-def is_valid_format(dtype_f, dtype_ui, nbits):
+def is_valid_format(dtype_f, dtype_u, nbits):
     assert (dtype_f().dtype.kind == 'f'), \
         '`dtype` of the argument `dtype_f` must be floating point types.'
-    assert (dtype_ui().dtype.kind == 'u'), \
+    assert (dtype_u().dtype.kind == 'u'), \
         '`dtype` of the argument `dtype_ui` must be unsigned integer types.'
 
-    remaining = dtype_ui().itemsize * 8 - 2
+    remaining = dtype_u().itemsize * 8 - 2
     if (nbits < 2) or (nbits > ((remaining - 2) // 2)):
         return False
     if (remaining - nbits * 2) > (dtype_f().itemsize * 8):
