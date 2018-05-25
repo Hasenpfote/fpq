@@ -36,6 +36,14 @@ fpq\.utils module
     :undoc-members:
     :show-inheritance:
 
+fpq\.vector module
+------------------
+
+.. automodule:: fpq.vector
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

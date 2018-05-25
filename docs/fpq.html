@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fpq package &#8212; fpq 0.3.0 documentation</title>
+    <title>fpq package &#8212; fpq 0.4.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0',
+        VERSION:     '0.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -195,6 +195,27 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="fpq.generic.decode_uint_to_fp">
+<code class="descclassname">fpq.generic.</code><code class="descname">decode_uint_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.decode_uint_to_fp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode unsigned integers to floating-points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – The type should be <cite>np.uint</cite>, or an array in <cite>np.uint</cite>.</li>
+<li><strong>nbits</strong> – The number of bits to use.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting floating-points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="fpq.generic.decode_unorm_to_fp">
 <code class="descclassname">fpq.generic.</code><code class="descname">decode_unorm_to_fp</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.decode_unorm_to_fp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decode unsigned normalized integers to floating-points.</p>
@@ -265,6 +286,27 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">enc</span> <span class="o">=</span> <span class="n">encode_fp_to_snorm</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">,</span> <span class="n">nbits</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="fpq.generic.encode_fp_to_uint">
+<code class="descclassname">fpq.generic.</code><code class="descname">encode_fp_to_uint</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>nbits=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.generic.encode_fp_to_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode floating-points to unsigned integers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – The type should be <cite>np.float</cite>, or an array in <cite>np.float</cite>.</li>
+<li><strong>nbits</strong> – The number of <a href="#id1"><span class="problematic" id="id2">`</span></a>bits to use.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The resulting unsigned integers.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -349,21 +391,15 @@
 </table>
 </dd></dl>
 
-<dl class="function">
-<dt id="fpq.quaternion.get_max_component_indices">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">get_max_component_indices</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.get_max_component_indices" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the maximum component indices.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="fpq.quaternion.remove_component">
-<code class="descclassname">fpq.quaternion.</code><code class="descname">remove_component</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.quaternion.remove_component" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes a component at the specified index.</p>
-</dd></dl>
-
 </div>
 <div class="section" id="module-fpq.utils">
 <span id="fpq-utils-module"></span><h2>fpq.utils module<a class="headerlink" href="#module-fpq.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="fpq.utils.get_max_component_indices">
+<code class="descclassname">fpq.utils.</code><code class="descname">get_max_component_indices</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.get_max_component_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the maximum component indices.</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="fpq.utils.remap">
 <code class="descclassname">fpq.utils.</code><code class="descname">remap</code><span class="sig-paren">(</span><em>value</em>, <em>src_min</em>, <em>src_max</em>, <em>dst_min</em>, <em>dst_max</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.remap" title="Permalink to this definition">¶</a></dt>
@@ -389,6 +425,36 @@
 <p>Examples:</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="fpq.utils.remove_component">
+<code class="descclassname">fpq.utils.</code><code class="descname">remove_component</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.remove_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a component at the specified index.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-fpq.vector">
+<span id="fpq-vector-module"></span><h2>fpq.vector module<a class="headerlink" href="#module-fpq.vector" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="fpq.vector.calc_breakdown_of_uint">
+<code class="descclassname">fpq.vector.</code><code class="descname">calc_breakdown_of_uint</code><span class="sig-paren">(</span><em>dtype</em>, <em>nbits</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.vector.calc_breakdown_of_uint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a breakdown of an unsigned integer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="fpq.vector.decode_uint_to_vec">
+<code class="descclassname">fpq.vector.</code><code class="descname">decode_uint_to_vec</code><span class="sig-paren">(</span><em>v</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.float64'&gt;</em>, <em>nbits=20</em>, <em>decoder=&lt;function decode_snorm_to_fp&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.vector.decode_uint_to_vec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="fpq.vector.encode_vec_to_uint">
+<code class="descclassname">fpq.vector.</code><code class="descname">encode_vec_to_uint</code><span class="sig-paren">(</span><em>v</em>, <em>*</em>, <em>dtype=&lt;class 'numpy.uint64'&gt;</em>, <em>nbits=20</em>, <em>encoder=&lt;function encode_fp_to_snorm&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.vector.encode_vec_to_uint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="fpq.vector.is_valid_format">
+<code class="descclassname">fpq.vector.</code><code class="descname">is_valid_format</code><span class="sig-paren">(</span><em>dtype_f</em>, <em>dtype_u</em>, <em>nbits</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.vector.is_valid_format" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-fpq">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-fpq" title="Permalink to this headline">¶</a></h2>
@@ -410,7 +476,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.3.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.4.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
