@@ -58,7 +58,7 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_f
         norm = np.float32(norm)
     elif norm.dtype != np.float64:
         norm = np.float64(norm)
-    enc_n = utils.encode_fp_to_uint(norm, nbits=breakdown[3])
+    enc_n = generic.encode_fp_to_uint(norm, nbits=breakdown[3])
     if enc_n.dtype != dtype:
         enc_n = dtype(enc_n)
 
@@ -88,7 +88,7 @@ def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=generic.decode_
         norm = np.uint32(norm)
     elif norm.dtype != np.uint64:
         norm = np.uint64(norm)
-    dec_n = utils.decode_uint_to_fp(norm, nbits=breakdown[3])
+    dec_n = generic.decode_uint_to_fp(norm, nbits=breakdown[3])
     if dec_n.dtype != dtype:
         dec_n = dtype(dec_n)
 
