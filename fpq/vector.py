@@ -36,13 +36,13 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_f
 
     # Normalize the vectors.
     norm = np.linalg.norm(v, axis=-1)
-    v /= norm[..., None]
+    nv = v / norm[..., None]
 
     # The sign of the maximum absolute component.
-    sign = np.where(v[max_abs_ind] < 0., -1., 1.)
+    sign = np.where(nv[max_abs_ind] < 0., -1., 1.)
 
     # Removes the maximum absolute component, and apply the sign.
-    remaining = utils.remove_component(v, indices=max_abs_ind) * sign[..., None]
+    remaining = utils.remove_component(nv, indices=max_abs_ind) * sign[..., None]
 
     #
     breakdown = calc_breakdown_of_uint(dtype, nbits)
