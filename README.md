@@ -5,10 +5,17 @@ fpq
 ===
 
 ## About  
-This package provides modules for manipulating floating-points quantization.
+This package provides modules for manipulating floating point numbers quantization using NumPy.
+
+## Feature
+* Supports multidimensional arrays.  
+* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits unsigned normalized integers.  
+* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits signed normalized integers.  
+* Supports encoding and decoding between 3d-vectors and N-bits unsigned integers.  
+* Supports encoding and decoding between Quaternions and N-bits unsigned integers.  
 
 ## Compatibility  
-* Python 3.x
+* Python 3.3+
 
 ## Installation  
 ```
