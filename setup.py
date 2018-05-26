@@ -23,7 +23,7 @@ def _long_description():
 if __name__ == '__main__':
     setup(
         name='fpq',
-        version='0.4.0',
+        version='0.5.0',
         description='',
         long_description=_long_description(),
         author='Hasenpfote',
