@@ -28,6 +28,54 @@ def calc_breakdown_of_uint(dtype, nbits):
     return 2, nbits, nbits, remaining - nbits * 2
 
 
+def _encode_fp_to_uint(x, *, dtype, nbits):
+
+    assert (x.dtype.kind == 'f'), \
+        '`dtype` of the argument `x` must be floating point types.'
+    assert (dtype().dtype.kind == 'u'), \
+        '`dtype` of the argument `dtype` must be unsigned integer types.'
+
+    if nbits <= 16:
+        dtype_f = np.float16
+    elif nbits <= 32:
+        dtype_f = np.float32
+    else:
+        dtype_f = np.float64
+
+    if x.dtype != dtype_f:
+        x = dtype_f(x)
+
+    enc = generic.encode_fp_to_uint(x, nbits=nbits)
+    if enc.dtype != dtype:
+        enc = dtype(enc)
+
+    return enc
+
+
+def _decode_uint_to_fp(x, *, dtype, nbits):
+
+    assert (x.dtype.kind == 'u'), \
+        '`dtype` of the argument `x` must be unsigned integer types.'
+    assert (dtype().dtype.kind == 'f'), \
+        '`dtype` of the argument `dtype` must be floating point types.'
+
+    if nbits <= 16:
+        dtype_u = np.uint16
+    elif nbits <= 32:
+        dtype_u = np.uint32
+    else:
+        dtype_u = np.uint64
+
+    if x.dtype != dtype_u:
+        x = dtype_u(x)
+
+    dec = generic.decode_uint_to_fp(x, nbits=nbits)
+    if dec.dtype != dtype:
+        dec = dtype(dec)
+
+    return dec
+
+
 def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_fp_to_snorm):
     assert is_valid_format(v.dtype.type, dtype, nbits), 'Not a valid format.'
 
@@ -41,26 +89,15 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_f
     # The sign of the maximum absolute component.
     sign = np.where(nv[max_abs_ind] < 0., -1., 1.)
 
-    # Removes the maximum absolute component, and apply the sign.
-    remaining = utils.remove_component(nv, indices=max_abs_ind) * sign[..., None]
-
-    #
     breakdown = calc_breakdown_of_uint(dtype, nbits)
 
     # Encoding for vector components.
+    remaining = utils.remove_component(nv, indices=max_abs_ind) * sign[..., None]
     enc = encoder(remaining, dtype=dtype, nbits=breakdown[1])
 
     # Encoding for the vector norm.
     norm *= sign
-    if (breakdown[3] <= 16) and (norm.dtype != np.float16):
-        norm = np.float16(norm)
-    elif (breakdown[3] <= 32) and (norm.dtype != np.float32):
-        norm = np.float32(norm)
-    elif norm.dtype != np.float64:
-        norm = np.float64(norm)
-    enc_n = generic.encode_fp_to_uint(norm, nbits=breakdown[3])
-    if enc_n.dtype != dtype:
-        enc_n = dtype(enc_n)
+    enc_n = _encode_fp_to_uint(norm, dtype=dtype, nbits=breakdown[3])
 
     return (dtype(max_abs_ind[-1]) << dtype(sum(breakdown[1:]))) \
            | (enc[..., 0] << dtype(sum(breakdown[2:]))) \
@@ -73,31 +110,23 @@ def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=generic.decode_
 
     breakdown = calc_breakdown_of_uint(v.dtype.type, nbits)
 
-    shifts = np.array([sum(breakdown[1:]), sum(breakdown[2:]), sum(breakdown[3:])], dtype=v.dtype)
-    masks = np.invert(v.dtype.type(np.iinfo(v.dtype).max) << np.array(breakdown[1:], dtype=v.dtype))
+    shifts = np.array([sum(breakdown[1:]), sum(breakdown[2:]), sum(breakdown[3:]), 0], dtype=v.dtype)
+    masks = np.invert(v.dtype.type(np.iinfo(v.dtype).max) << np.array(breakdown, dtype=v.dtype))
 
-    # Decoding for vector components.
-    dec_1 = decoder((v >> shifts[1]) & masks[0], dtype=dtype, nbits=breakdown[1])
-    dec_2 = decoder((v >> shifts[2]) & masks[1], dtype=dtype, nbits=breakdown[2])
+    temp = (...,) + (None,) * v.ndim
+    components = (v >> shifts[temp]) & masks[temp]
+    components = np.squeeze(components)
 
     # Decoding for the vector norm.
-    norm = v & masks[2]
-    if (breakdown[3] <= 16) and (norm.dtype != np.uint16):
-        norm = np.uint16(norm)
-    elif (breakdown[3] <= 32) and (norm.dtype != np.uint32):
-        norm = np.uint32(norm)
-    elif norm.dtype != np.uint64:
-        norm = np.uint64(norm)
-    dec_n = generic.decode_uint_to_fp(norm, nbits=breakdown[3])
-    if dec_n.dtype != dtype:
-        dec_n = dtype(dec_n)
+    dec_n = _decode_uint_to_fp(components[3], dtype=dtype, nbits=breakdown[3])
 
-    dec_0 = np.sqrt(dtype(1.) - np.square(dec_1) - np.square(dec_2))
+    # Decoding for vector components.
+    dec = decoder(components[1:3], dtype=dtype, nbits=breakdown[1])
+    c0 = (np.sqrt(dtype(1.) - np.square(dec[0]) - np.square(dec[1]))) * dec_n
+    c1 = dec[0] * dec_n
+    c2 = dec[1] * dec_n
 
-    c0 = dec_0 * dec_n
-    c1 = dec_1 * dec_n
-    c2 = dec_2 * dec_n
-
-    max_c = v >> v.dtype.type(shifts[0])
+    max_c = components[0]
+    permutation = [i for i in range(1, v.ndim+1)] + [0,]
     return np.where(max_c == 0, (c0, c1, c2),
-                    np.where(max_c == 1, (c1, c0, c2), (c1, c2, c0))).transpose()
+                    np.where(max_c == 1, (c1, c0, c2), (c1, c2, c0))).transpose(permutation)

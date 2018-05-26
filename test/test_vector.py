@@ -131,7 +131,7 @@ class TestVector(TestCase):
     def test_encode_decode(self):
         dtypes = (np.float32, np.uint32)
         nbits = 10
-        expected = np.array([1., 2., 3.], dtype=dtypes[0])
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
         enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
         self.assertTrue(isinstance(enc, dtypes[1]))
         dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
@@ -140,8 +140,38 @@ class TestVector(TestCase):
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
         nbits = 10
-        expected = np.array([[1., 2., 3.],
-                             [2.,-3., 1.]], dtype=dtypes[0])
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+        nbits = 10
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+        nbits = 10
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
         enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
         self.assertTrue(isinstance(enc, np.ndarray))
         self.assertTrue(enc.dtype == dtypes[1])
