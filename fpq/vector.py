@@ -115,7 +115,6 @@ def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=generic.decode_
 
     temp = (...,) + (None,) * v.ndim
     components = (v >> shifts[temp]) & masks[temp]
-    components = np.squeeze(components)
 
     # Decoding for the vector norm.
     dec_n = _decode_uint_to_fp(components[3], dtype=dtype, nbits=breakdown[3])
