@@ -95,18 +95,56 @@ class TestQuaternion(TestCase):
         self.assertTrue(self.quat_are_same_rotation(actual, expected, atol=1e-06))
 
     def test_enc_dec(self):
-        q = np.array([self.quat_random() for _ in range(100)], dtype=np.float64)
+        q = self.quat_random()
+        enc = encode_quat_to_uint(q, dtype=np.uint64)
+        dec = decode_uint_to_quat(enc, dtype=np.float64)
+        self.assertTrue(self.quat_are_same_rotation(q, dec))
+
+        q = np.array([self.quat_random() for _ in range(10)], dtype=np.float64)
         enc = encode_quat_to_uint(q, dtype=np.uint64)
         dec = decode_uint_to_quat(enc, dtype=np.float64)
         for src, dst in zip(q, dec):
+            self.assertTrue(self.quat_are_same_rotation(src, dst))
+
+        q = np.array([self.quat_random() for _ in range(6)], dtype=np.float64)
+        q = q.reshape(2, 3, 4)
+        enc = encode_quat_to_uint(q, dtype=np.uint64)
+        dec = decode_uint_to_quat(enc, dtype=np.float64)
+        for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
+            self.assertTrue(self.quat_are_same_rotation(src, dst))
+
+        q = np.array([self.quat_random() for _ in range(12)], dtype=np.float64)
+        q = q.reshape(2, 2, 3, 4)
+        enc = encode_quat_to_uint(q, dtype=np.uint64)
+        dec = decode_uint_to_quat(enc, dtype=np.float64)
+        for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
             self.assertTrue(self.quat_are_same_rotation(src, dst))
 
     def test_enc_dec_by_d3d(self):
         encoder = fpq.d3d.encode_fp_to_snorm
         decoder = fpq.d3d.decode_snorm_to_fp
 
-        q = np.array([self.quat_random() for _ in range(100)], dtype=np.float64)
+        q = self.quat_random()
+        enc = encode_quat_to_uint(q, dtype=np.uint64, encoder=encoder)
+        dec = decode_uint_to_quat(enc, dtype=np.float64, decoder=decoder)
+        self.assertTrue(self.quat_are_same_rotation(q, dec))
+
+        q = np.array([self.quat_random() for _ in range(10)], dtype=np.float64)
         enc = encode_quat_to_uint(q, dtype=np.uint64, encoder=encoder)
         dec = decode_uint_to_quat(enc, dtype=np.float64, decoder=decoder)
         for src, dst in zip(q, dec):
+            self.assertTrue(self.quat_are_same_rotation(src, dst))
+
+        q = np.array([self.quat_random() for _ in range(6)], dtype=np.float64)
+        q = q.reshape(2, 3, 4)
+        enc = encode_quat_to_uint(q, dtype=np.uint64, encoder=encoder)
+        dec = decode_uint_to_quat(enc, dtype=np.float64, decoder=decoder)
+        for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
+            self.assertTrue(self.quat_are_same_rotation(src, dst))
+
+        q = np.array([self.quat_random() for _ in range(12)], dtype=np.float64)
+        q = q.reshape(2, 2, 3, 4)
+        enc = encode_quat_to_uint(q, dtype=np.uint64, encoder=encoder)
+        dec = decode_uint_to_quat(enc, dtype=np.float64, decoder=decoder)
+        for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
             self.assertTrue(self.quat_are_same_rotation(src, dst))

@@ -30,9 +30,9 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=generic.encode_fp_to_snor
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
     src_max = np.reciprocal(np.sqrt(q.dtype.type(2.)))
     src_min = -src_max
-    remapped = utils.remap(remaining, src_min, src_max, q.dtype.type(-1.), q.dtype.type(1.))
+    remaining = utils.remap(remaining, src_min, src_max, q.dtype.type(-1.), q.dtype.type(1.))
 
-    enc = encoder(remapped, dtype=dtype, nbits=nbits_per_component)
+    enc = encoder(remaining, dtype=dtype, nbits=nbits_per_component)
 
     return (dtype(max_abs_ind[-1]) << dtype(nbits_per_component * 3)) \
            | (enc[..., 0] << dtype(nbits_per_component * 2)) \
@@ -57,23 +57,32 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=generic.decode_snorm_to_
         '`dtype` of the argument `dtype` should be floating point types.'
 
     bits_per_component = ((q.dtype.itemsize * 8) - 2) // 3
-    mask = np.invert(q.dtype.type(np.iinfo(q.dtype).max) << q.dtype.type(bits_per_component))
 
-    c1 = decoder((q >> q.dtype.type(bits_per_component * 2)) & mask,
-                 dtype=dtype, nbits=bits_per_component)
-    c2 = decoder((q >> q.dtype.type(bits_per_component)) & mask,
-                 dtype=dtype, nbits=bits_per_component)
-    c3 = decoder(q & mask, dtype=dtype, nbits=bits_per_component)
+    shifts = np.array([bits_per_component * 3,
+                       bits_per_component * 2,
+                       bits_per_component,
+                       0], dtype=q.dtype)
+    mask = np.invert(q.dtype.type(np.iinfo(q.dtype).max) << q.dtype.type(bits_per_component))
+    masks = np.array([0x3, mask, mask, mask], dtype=q.dtype)
+
+    temp = (...,) + (None,) * q.ndim
+    components = (q >> shifts[temp]) & masks[temp]
+
+    # Decoding for quaternion components.
+    dec = decoder(components[1:4], dtype=dtype, nbits=bits_per_component)
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
     src_max = np.reciprocal(np.sqrt(dtype(2.)))
     src_min = -src_max
-    c1 = utils.remap(c1, dtype(-1.), dtype(1.), src_min, src_max)
-    c2 = utils.remap(c2, dtype(-1.), dtype(1.), src_min, src_max)
-    c3 = utils.remap(c3, dtype(-1.), dtype(1.), src_min, src_max)
-    c0 = np.sqrt(dtype(1.) - np.square(c1) - np.square(c2) - np.square(c3))
+    dec = utils.remap(dec, dtype(-1.), dtype(1.), src_min, src_max)
 
-    max_c = q >> q.dtype.type(bits_per_component * 3)
+    c0 = np.sqrt(dtype(1.) - np.square(dec[0]) - np.square(dec[1]) - np.square(dec[2]))
+    c1 = dec[0]
+    c2 = dec[1]
+    c3 = dec[2]
+
+    max_c = components[0]
+    permutation = [i for i in range(1, q.ndim + 1)] + [0, ]
     return np.where(max_c == 0, (c0, c1, c2, c3),
                     np.where(max_c == 1, (c1, c0, c2, c3),
-                             np.where(max_c == 2, (c1, c2, c0, c3), (c1, c2, c3, c0)))).transpose()
+                             np.where(max_c == 2, (c1, c2, c0, c3), (c1, c2, c3, c0)))).transpose(permutation)
