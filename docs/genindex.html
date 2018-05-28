@@ -6,13 +6,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; fpq 0.5.1 documentation</title>
+    <title>Index &#8212; fpq 0.6.0 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.5.1',
+        VERSION:     '0.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -36,7 +36,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.5.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.6.0 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -83,48 +83,40 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="fpq.html#fpq.d3d.decode_snorm_to_fp">decode_snorm_to_fp() (in module fpq.d3d)</a>
-
-      <ul>
-        <li><a href="fpq.html#fpq.generic.decode_snorm_to_fp">(in module fpq.generic)</a>
+      <li><a href="fpq.html#fpq.fp.decode_d3d_snorm_to_fp">decode_d3d_snorm_to_fp() (in module fpq.fp)</a>
 </li>
-      </ul></li>
-      <li><a href="fpq.html#fpq.generic.decode_uint_to_fp">decode_uint_to_fp() (in module fpq.generic)</a>
+      <li><a href="fpq.html#fpq.fp.decode_ogl_snorm_to_fp">decode_ogl_snorm_to_fp() (in module fpq.fp)</a>
+</li>
+      <li><a href="fpq.html#fpq.fp.decode_std_snorm_to_fp">decode_std_snorm_to_fp() (in module fpq.fp)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="fpq.html#fpq.fp.decode_std_unorm_to_fp">decode_std_unorm_to_fp() (in module fpq.fp)</a>
+</li>
+      <li><a href="fpq.html#fpq.fp.decode_uint_to_fp">decode_uint_to_fp() (in module fpq.fp)</a>
+</li>
       <li><a href="fpq.html#fpq.quaternion.decode_uint_to_quat">decode_uint_to_quat() (in module fpq.quaternion)</a>
 </li>
       <li><a href="fpq.html#fpq.vector.decode_uint_to_vec">decode_uint_to_vec() (in module fpq.vector)</a>
 </li>
-      <li><a href="fpq.html#fpq.d3d.decode_unorm_to_fp">decode_unorm_to_fp() (in module fpq.d3d)</a>
-
-      <ul>
-        <li><a href="fpq.html#fpq.generic.decode_unorm_to_fp">(in module fpq.generic)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="fpq.html#fpq.d3d.encode_fp_to_snorm">encode_fp_to_snorm() (in module fpq.d3d)</a>
-
-      <ul>
-        <li><a href="fpq.html#fpq.generic.encode_fp_to_snorm">(in module fpq.generic)</a>
+      <li><a href="fpq.html#fpq.fp.encode_fp_to_d3d_snorm">encode_fp_to_d3d_snorm() (in module fpq.fp)</a>
 </li>
-      </ul></li>
-      <li><a href="fpq.html#fpq.generic.encode_fp_to_uint">encode_fp_to_uint() (in module fpq.generic)</a>
+      <li><a href="fpq.html#fpq.fp.encode_fp_to_ogl_snorm">encode_fp_to_ogl_snorm() (in module fpq.fp)</a>
+</li>
+      <li><a href="fpq.html#fpq.fp.encode_fp_to_std_snorm">encode_fp_to_std_snorm() (in module fpq.fp)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="fpq.html#fpq.d3d.encode_fp_to_unorm">encode_fp_to_unorm() (in module fpq.d3d)</a>
-
-      <ul>
-        <li><a href="fpq.html#fpq.generic.encode_fp_to_unorm">(in module fpq.generic)</a>
+      <li><a href="fpq.html#fpq.fp.encode_fp_to_std_unorm">encode_fp_to_std_unorm() (in module fpq.fp)</a>
 </li>
-      </ul></li>
+      <li><a href="fpq.html#fpq.fp.encode_fp_to_uint">encode_fp_to_uint() (in module fpq.fp)</a>
+</li>
       <li><a href="fpq.html#fpq.quaternion.encode_quat_to_uint">encode_quat_to_uint() (in module fpq.quaternion)</a>
 </li>
       <li><a href="fpq.html#fpq.vector.encode_vec_to_uint">encode_vec_to_uint() (in module fpq.vector)</a>
@@ -137,9 +129,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="fpq.html#module-fpq">fpq (module)</a>
 </li>
-      <li><a href="fpq.html#module-fpq.d3d">fpq.d3d (module)</a>
-</li>
-      <li><a href="fpq.html#module-fpq.generic">fpq.generic (module)</a>
+      <li><a href="fpq.html#module-fpq.fp">fpq.fp (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -196,7 +186,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.5.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.6.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
