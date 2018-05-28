@@ -130,7 +130,7 @@ class TestVector(TestCase):
             self.assertTrue(isinstance(actual, tuple))
             self.assertTrue(np.array_equal(actual, expected[i]))
 
-    @unittest.skipIf(NumpyVersion(np.__version__) < '1.11.0', 'not supported in this numpy version')
+    @unittest.skipIf(NumpyVersion(np.__version__) < '1.11.2', 'not supported in this numpy version')
     def test_encoding_decoding_between_vec16_and_uint32(self):
         dtypes = (np.float16, np.uint32)
         nbits = 10
@@ -140,7 +140,7 @@ class TestVector(TestCase):
         self.assertTrue(isinstance(enc, dtypes[1]))
         dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
         self.assertTrue(isinstance(dec, np.ndarray))
-        self.assertTrue(dec.dtype == dtypes[0], msg=NumpyVersion(np.__version__).vstring)
+        self.assertTrue(dec.dtype == dtypes[0])
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
         expected = np.array([[10, 20, 30],
