@@ -4,6 +4,7 @@ import unittest
 from unittest import TestCase
 from itertools import chain
 import numpy as np
+from numpy.lib import NumpyVersion
 import sys
 sys.path.append('../')
 from fpq.vector import *
@@ -129,7 +130,7 @@ class TestVector(TestCase):
             self.assertTrue(isinstance(actual, tuple))
             self.assertTrue(np.array_equal(actual, expected[i]))
 
-    @unittest.skipIf(np.__version__ < '1.10.0', 'not supported in this numpy version')
+    @unittest.skipIf(NumpyVersion(np.__version__) < '1.10.0', 'not supported in this numpy version')
     def test_encoding_decoding_between_vec16_and_uint32(self):
         dtypes = (np.float16, np.uint32)
         nbits = 10
