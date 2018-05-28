@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from . import utils
-from . import generic
+from . import fp
 
 
 def is_valid_format(dtype_f, dtype_u, nbits):
@@ -45,7 +45,7 @@ def _encode_fp_to_uint(x, *, dtype, nbits):
     if x.dtype != dtype_f:
         x = dtype_f(x)
 
-    enc = generic.encode_fp_to_uint(x, nbits=nbits)
+    enc = fp.encode_fp_to_uint(x, nbits=nbits)
     if enc.dtype != dtype:
         enc = dtype(enc)
 
@@ -69,14 +69,14 @@ def _decode_uint_to_fp(x, *, dtype, nbits):
     if x.dtype != dtype_u:
         x = dtype_u(x)
 
-    dec = generic.decode_uint_to_fp(x, nbits=nbits)
+    dec = fp.decode_uint_to_fp(x, nbits=nbits)
     if dec.dtype != dtype:
         dec = dtype(dec)
 
     return dec
 
 
-def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_fp_to_snorm):
+def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_std_snorm):
     assert is_valid_format(v.dtype.type, dtype, nbits), 'Not a valid format.'
 
     # Get the maximum absolute component indices.
@@ -105,7 +105,7 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=generic.encode_f
            | enc_n
 
 
-def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=generic.decode_snorm_to_fp):
+def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=fp.decode_std_snorm_to_fp):
     assert is_valid_format(dtype, v.dtype.type, nbits), 'Not a valid format.'
 
     breakdown = calc_breakdown_of_uint(v.dtype.type, nbits)

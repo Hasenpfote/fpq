@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from . import utils
-from . import generic
+from . import fp
 
 
-def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=generic.encode_fp_to_snorm):
+def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm):
     '''Encode Quaternions to unsigned integers.
 
     Args:
@@ -40,7 +40,7 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=generic.encode_fp_to_snor
            | enc[..., 2]
 
 
-def decode_uint_to_quat(q, *, dtype=np.float64, decoder=generic.decode_snorm_to_fp):
+def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_fp):
     '''Decode unsigned integers to Quaternions.
 
     Args:

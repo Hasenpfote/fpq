@@ -6,7 +6,7 @@ import numpy as np
 import sys
 sys.path.append('../')
 from fpq.vector import *
-import fpq.d3d
+import fpq.fp
 
 
 class TestVector(TestCase):
@@ -128,9 +128,10 @@ class TestVector(TestCase):
             self.assertTrue(isinstance(actual, tuple))
             self.assertTrue(np.array_equal(actual, expected[i]))
 
-    def test_encode_decode(self):
-        dtypes = (np.float32, np.uint32)
+    def test_encoding_decoding_between_vec16_and_uint32(self):
+        dtypes = (np.float16, np.uint32)
         nbits = 10
+
         expected = np.array([-50, 30, 20], dtype=dtypes[0])
         enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
         self.assertTrue(isinstance(enc, dtypes[1]))
@@ -139,7 +140,6 @@ class TestVector(TestCase):
         self.assertTrue(dec.dtype == dtypes[0])
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
-        nbits = 10
         expected = np.array([[10, 20, 30],
                              [-40, 30, 20]], dtype=dtypes[0])
         enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
@@ -150,7 +150,6 @@ class TestVector(TestCase):
         self.assertTrue(dec.dtype == dtypes[0])
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
-        nbits = 10
         expected = np.array([[[10, 20, 30],
                               [-40, 30, 20]],
                              [[10, 20, 60],
@@ -163,7 +162,6 @@ class TestVector(TestCase):
         self.assertTrue(dec.dtype == dtypes[0])
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
-        nbits = 10
         expected = np.array([[[[10, 20, 30],
                                [-40, 30, 20]],
                               [[10, 20, 90],
@@ -179,3 +177,259 @@ class TestVector(TestCase):
         self.assertTrue(isinstance(dec, np.ndarray))
         self.assertTrue(dec.dtype == dtypes[0])
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+    def test_encoding_decoding_between_vec32_and_uint32(self):
+        dtypes = (np.float32, np.uint32)
+        nbits = 10
+
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, dtypes[1]))
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
+
+    def test_encoding_decoding_between_vec32_and_uint64(self):
+        dtypes = (np.float32, np.uint64)
+        nbits = 20
+
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, dtypes[1]))
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+    def test_encoding_decoding_between_vec64_and_uint64(self):
+        dtypes = (np.float64, np.uint64)
+        nbits = 20
+
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, dtypes[1]))
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+    def test_encoding_decoding_between_vec_and_uint_by_ogl(self):
+        encoder = fpq.fp.encode_fp_to_ogl_snorm
+        decoder = fpq.fp.decode_ogl_snorm_to_fp
+
+        dtypes = (np.float64, np.uint64)
+        nbits = 20
+
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, dtypes[1]))
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+    def test_encoding_decoding_between_vec_and_uint_by_d3d(self):
+        encoder = fpq.fp.encode_fp_to_d3d_snorm
+        decoder = fpq.fp.decode_d3d_snorm_to_fp
+
+        dtypes = (np.float64, np.uint64)
+        nbits = 20
+
+        expected = np.array([-50, 30, 20], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, dtypes[1]))
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[10, 20, 30],
+                             [-40, 30, 20]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[10, 20, 30],
+                              [-40, 30, 20]],
+                             [[10, 20, 60],
+                              [-50, 30, 20]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
+
+        expected = np.array([[[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 90],
+                               [-50, 30, 20]]],
+                             [[[10, 20, 30],
+                               [-40, 30, 20]],
+                              [[10, 20, 60],
+                               [-80, 30, 20]]]], dtype=dtypes[0])
+        enc = encode_vec_to_uint(expected, dtype=dtypes[1], nbits=nbits, encoder=encoder)
+        self.assertTrue(isinstance(enc, np.ndarray))
+        self.assertTrue(enc.dtype == dtypes[1])
+        dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits, decoder=decoder)
+        self.assertTrue(isinstance(dec, np.ndarray))
+        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(np.allclose(dec, expected, rtol=1e-03, atol=1e-04))
