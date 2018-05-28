@@ -70,27 +70,27 @@ class TestQuaternion(TestCase):
         q = self.quat_random()
         enc = encode_quat_to_uint(q, dtype=dtypes[1])
         dec = decode_uint_to_quat(enc, dtype=dtypes[0])
-        self.assertTrue(self.quat_are_same_rotation(q, dec, atol=1e-06))
+        self.assertTrue(self.quat_are_same_rotation(q, dec, atol=1e-05))
 
         q = np.array([self.quat_random() for _ in range(10)], dtype=dtypes[0])
         enc = encode_quat_to_uint(q, dtype=dtypes[1])
         dec = decode_uint_to_quat(enc, dtype=dtypes[0])
         for src, dst in zip(q, dec):
-            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-06))
+            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-05))
 
         q = np.array([self.quat_random() for _ in range(6)], dtype=dtypes[0])
         q = q.reshape(2, 3, 4)
         enc = encode_quat_to_uint(q, dtype=dtypes[1])
         dec = decode_uint_to_quat(enc, dtype=dtypes[0])
         for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
-            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-06))
+            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-05))
 
         q = np.array([self.quat_random() for _ in range(12)], dtype=dtypes[0])
         q = q.reshape(2, 2, 3, 4)
         enc = encode_quat_to_uint(q, dtype=dtypes[1])
         dec = decode_uint_to_quat(enc, dtype=dtypes[0])
         for src, dst in zip(q.reshape(-1, 4), dec.reshape(-1, 4)):
-            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-06))
+            self.assertTrue(self.quat_are_same_rotation(src, dst, atol=1e-05))
 
     def test_encoding_decoding_between_quat64_and_uint64(self):
         dtypes = (np.float64, np.uint64)
