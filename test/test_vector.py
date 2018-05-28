@@ -140,7 +140,7 @@ class TestVector(TestCase):
         self.assertTrue(isinstance(enc, dtypes[1]))
         dec = decode_uint_to_vec(enc, dtype=dtypes[0], nbits=nbits)
         self.assertTrue(isinstance(dec, np.ndarray))
-        self.assertTrue(dec.dtype == dtypes[0])
+        self.assertTrue(dec.dtype == dtypes[0], msg=NumpyVersion(np.__version__).vstring)
         self.assertTrue(np.allclose(dec, expected, rtol=1e-01, atol=1e-02))
 
         expected = np.array([[10, 20, 30],
