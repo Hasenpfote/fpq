@@ -37,14 +37,14 @@ if __name__ == '__main__':
     setup(
         name='fpq',
         version=get_version(),
-        description='',
+        description='This package provides modules for manipulating floating point numbers quantization using NumPy.',
         long_description=_long_description(),
         author='Hasenpfote',
         author_email='Hasenpfote36@gmail.com',
-        url='',
+        url='https://github.com/Hasenpfote/fpq',
         download_url='',
         packages = ['fpq'],
-        keywords=['',],
+        keywords=['quantization', 'floating-point', 'vector', 'quaternion'],
         classifiers=[
             'Programming Language :: Python',
             'Programming Language :: Python :: 3',
