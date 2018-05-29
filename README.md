@@ -19,11 +19,7 @@ This package provides modules for manipulating floating point numbers quantizati
 
 ## Installation  
 ```
-pip install git+https://github.com/Hasenpfote/fpq
-```
-or
-```
-python setup.py install
+pip install fpq
 ```
 
 ## Usage
