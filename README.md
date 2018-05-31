@@ -1,10 +1,11 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/Hasenpfote/fpq/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.org/Hasenpfote/fpq)  
+[![Build Status](https://travis-ci.org/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.org/Hasenpfote/fpq)
+[![PyPI version](https://badge.fury.io/py/fpq.svg)](https://badge.fury.io/py/fpq)  
 
 fpq
 ===
 
-## About  
+## About
 This package provides modules for manipulating floating point numbers quantization using NumPy.
 
 ## Feature
@@ -14,10 +15,10 @@ This package provides modules for manipulating floating point numbers quantizati
 * Supports encoding and decoding between 3d-vectors and N-bits unsigned integers.  
 * Supports encoding and decoding between Quaternions and N-bits unsigned integers.  
 
-## Compatibility  
+## Compatibility
 * Python 3.3+
 
-## Installation  
+## Installation
 ```
 pip install fpq
 ```
@@ -104,10 +105,10 @@ Here are a few [examples](https://github.com/Hasenpfote/fpq/tree/master/example)
 ## Documentation
 For users, docs are now available at https://hasenpfote.github.io/fpq/.
 
-## References and links  
+## References and links
 [D3D: Data Conversion Rules](https://msdn.microsoft.com/en-us/library/windows/desktop/dd607323(v=vs.85).aspx)  
 [OGL: Normalized Integer](https://www.khronos.org/opengl/wiki/Normalized_Integer)  
 [Vulkan: Fixed-Point Data Conversions](http://vulkan-spec-chunked.ahcox.com/ch02s08.html)
 
-## License  
+## License
 This software is released under the MIT License, see LICENSE.

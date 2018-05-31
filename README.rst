@@ -1,4 +1,4 @@
-|License| |Build Status|
+|License| |Build Status| |PyPI version|
 
 fpq
 ===
@@ -148,3 +148,5 @@ This software is released under the MIT License, see LICENSE.
    :target: https://github.com/Hasenpfote/fpq/blob/master/LICENSE
 .. |Build Status| image:: https://travis-ci.org/Hasenpfote/fpq.svg?branch=master
    :target: https://travis-ci.org/Hasenpfote/fpq
+.. |PyPI version| image:: https://badge.fury.io/py/fpq.svg
+   :target: https://badge.fury.io/py/fpq
