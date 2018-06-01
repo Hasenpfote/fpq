@@ -5,10 +5,9 @@ import numpy as np
 
 def get_max_component_indices(x):
     '''Get the maximum component indices.'''
-    ind1 = x.argmax(axis=x.ndim-1)
-    ind2 = np.indices(ind1.shape)
-    shape = (ind2.shape[0]+1,) + ind2.shape[1:]
-    return tuple(np.append(ind2, ind1).reshape(shape))
+    inds1 = x.argmax(axis=-1)
+    inds2 = np.indices(inds1.shape)
+    return tuple(np.concatenate((inds2, inds1[None, ...])))
 
 
 def remove_component(x, *, indices):
