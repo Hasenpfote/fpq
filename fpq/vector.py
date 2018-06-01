@@ -77,6 +77,21 @@ def _decode_uint_to_fp(x, *, dtype, nbits):
 
 
 def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_std_snorm):
+    '''Encode vectors to unsigned integers.
+
+    Args:
+        v: Should be represented by three components of float, or an array of them.
+        dtype: The type should be unsigned integer types.
+        nbits: The number of bits to use.
+        encoder: This is a function encodes a floating point to an unsigned integer.
+
+    Returns:
+        The resulting unsigned integers.
+
+    Examples:
+        >>> v = np.array([1., 2., 3.], dtype=np.float64)
+        >>> encode_vec_to_uint(v, dtype=np.uint64, nbits=20)
+    '''
     assert is_valid_format(v.dtype.type, dtype, nbits), 'Not a valid format.'
 
     # Get the maximum absolute component indices.
@@ -106,6 +121,22 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
 
 
 def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=fp.decode_std_snorm_to_fp):
+    '''Decode unsigned integers to vectors.
+
+    Args:
+        v: Should be represented by uint, or an array of them.
+        dtype: The type should be floating point types.
+        nbits: The number of bits to use.
+        decoder: This is a function decodes an unsigned integer to a floating point.
+
+    Returns:
+        The resulting vectors.
+
+    Examples:
+        >>> v = np.array([1., 2., 3.], dtype=np.float64)
+        >>> enc = encode_vec_to_uint(v, dtype=np.uint64, nbits=20)
+        >>> decode_uint_to_vec(enc, dtype=np.float64, nbits=20)
+    '''
     assert is_valid_format(dtype, v.dtype.type, nbits), 'Not a valid format.'
 
     breakdown = calc_breakdown_of_uint(v.dtype.type, nbits)

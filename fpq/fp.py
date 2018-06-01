@@ -9,10 +9,20 @@ def encode_fp_to_uint(x, *, nbits=None):
 
     Args:
         x: The type should be `np.float`, or an array in `np.float`.
-        nbits: The number of `bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting unsigned integers.
+
+    Examples:
+        >>> fp = np.float32(1.)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
+
+        >>> fp = np.array([0., 0.5, 1.], dtype=np.float32)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
+
+        >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
     '''
     assert (x.dtype.kind == 'f'), \
         '`dtype` of the argument `x` must be floating point types.'
@@ -35,6 +45,19 @@ def decode_uint_to_fp(x, *, nbits=None):
 
     Returns:
         The resulting floating-points.
+
+    Examples:
+        >>> fp = np.float32(1.)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
+        >>> dec = decode_uint_to_fp(enc, nbits=20)
+
+        >>> fp = np.array([0., 0.5, 1.], dtype=np.float32)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
+        >>> dec = decode_uint_to_fp(enc, nbits=20)
+
+        >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
+        >>> enc = encode_fp_to_uint(fp, nbits=20)
+        >>> dec = decode_uint_to_fp(enc, nbits=20)
     '''
     assert (x.dtype.kind == 'u'), \
         '`dtype` of the argument `x` must be unsigned integer types.'
@@ -54,7 +77,7 @@ def encode_fp_to_std_unorm(x, *, dtype=np.uint8, nbits=None):
     Args:
         x: The type should be `np.float`, or an array in `np.float`.
         dtype: The type should be `np.uint`.
-        nbits: The number of `dst` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
@@ -91,7 +114,7 @@ def decode_std_unorm_to_fp(x, *, dtype=np.float32, nbits=None):
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
         dtype: The type should be `np.float`.
-        nbits: The number of `src` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting floating-points.
@@ -131,7 +154,7 @@ def encode_fp_to_std_snorm(x, *, dtype=np.uint8, nbits=None):
     Args:
         x: The type should be `np.float`, or an array in `np.float`.
         dtype: The type should be `np.uint`.
-        nbits: The number of `dst` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
@@ -169,7 +192,7 @@ def decode_std_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
         dtype: The type should be `np.float`.
-        nbits: The number of `src` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting floating-points.
@@ -210,7 +233,7 @@ def encode_fp_to_ogl_snorm(x, *, dtype=np.uint8, nbits=None):
     Args:
         x: The type should be `np.float`, or an array in `np.float`.
         dtype: The type should be `np.uint`.
-        nbits: The number of `dst` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
@@ -238,7 +261,7 @@ def decode_ogl_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
         dtype: The type should be `np.float`.
-        nbits: The number of `src` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting floating-points.
@@ -269,7 +292,7 @@ def encode_fp_to_d3d_snorm(x, *, dtype=np.uint8, nbits=None):
     Args:
         x: The type should be `np.float`, or an array in `np.float`.
         dtype: The type should be `np.uint`.
-        nbits: The number of `dst` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting unsigned normalized integers.
@@ -297,7 +320,7 @@ def decode_d3d_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     Args:
         x: The type should be `np.uint`, or an array in `np.uint`.
         dtype: The type should be `np.float`.
-        nbits: The number of `src` bits to use.
+        nbits: The number of bits to use.
 
     Returns:
         The resulting floating-points.

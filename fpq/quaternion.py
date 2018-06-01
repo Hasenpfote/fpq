@@ -15,6 +15,10 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm
 
     Returns:
         The resulting unsigned integers.
+
+    Examples:
+        >>> q = np.array([1., 0., 0., 0.], dtype=np.float64)
+        >>> encode_quat_to_uint(q, dtype=np.uint64)
     '''
     assert (isinstance(q, np.ndarray) and (q.dtype.kind == 'f')), \
         '`dtype` of the argument `q` should be floating point types.'
@@ -50,6 +54,11 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_f
 
     Returns:
         The resulting Quaternions.
+
+    Examples:
+        >>> q = np.array([1., 0., 0., 0.], dtype=np.float64)
+        >>> enc = encode_quat_to_uint(q, dtype=np.uint64)
+        >>> decode_uint_to_quat(enc, dtype=np.float64)
     '''
     assert (q.dtype.kind == 'u'), \
         '`dtype` of the argument `q` should be unsigned integer types.'
