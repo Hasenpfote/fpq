@@ -27,9 +27,9 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm
 
     nbits_per_component = ((dtype().dtype.itemsize * 8) - 2) // 3
 
-    max_abs_ind = utils.get_max_component_indices(np.fabs(q))
-    sign = np.where(q[max_abs_ind] < 0., -1., 1.)
-    remaining = sign[..., None] * utils.remove_component(q, indices=max_abs_ind)
+    max_abs_inds = utils.get_max_component_indices(np.fabs(q))
+    sign = np.sign(q[max_abs_inds])
+    remaining = sign[..., None] * utils.remove_component(q, indices=max_abs_inds)
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
     src_max = np.reciprocal(np.sqrt(q.dtype.type(2.)))
@@ -38,7 +38,7 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm
 
     enc = encoder(remaining, dtype=dtype, nbits=nbits_per_component)
 
-    return (dtype(max_abs_ind[-1]) << dtype(nbits_per_component * 3)) \
+    return (dtype(max_abs_inds[-1]) << dtype(nbits_per_component * 3)) \
            | (enc[..., 0] << dtype(nbits_per_component * 2)) \
            | (enc[..., 1] << dtype(nbits_per_component)) \
            | enc[..., 2]

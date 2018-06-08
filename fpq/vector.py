@@ -95,26 +95,26 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
     assert is_valid_format(v.dtype.type, dtype, nbits), 'Not a valid format.'
 
     # Get the maximum absolute component indices.
-    max_abs_ind = utils.get_max_component_indices(np.fabs(v))
+    max_abs_inds = utils.get_max_component_indices(np.fabs(v))
 
     # Normalize the vectors.
     norm = np.linalg.norm(v, axis=-1)
     nv = v / norm[..., None]
 
     # The sign of the maximum absolute component.
-    sign = np.where(nv[max_abs_ind] < 0., -1., 1.)
+    sign = np.sign(nv[max_abs_inds])
 
     breakdown = calc_breakdown_of_uint(dtype, nbits)
 
     # Encoding for vector components.
-    remaining = utils.remove_component(nv, indices=max_abs_ind) * sign[..., None]
+    remaining = utils.remove_component(nv, indices=max_abs_inds) * sign[..., None]
     enc = encoder(remaining, dtype=dtype, nbits=breakdown[1])
 
     # Encoding for the vector norm.
     norm *= sign
     enc_n = _encode_fp_to_uint(norm, dtype=dtype, nbits=breakdown[3])
 
-    return (dtype(max_abs_ind[-1]) << dtype(sum(breakdown[1:]))) \
+    return (dtype(max_abs_inds[-1]) << dtype(sum(breakdown[1:]))) \
            | (enc[..., 0] << dtype(sum(breakdown[2:]))) \
            | (enc[..., 1] << dtype(sum(breakdown[3:]))) \
            | enc_n
