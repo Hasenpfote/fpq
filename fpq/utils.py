@@ -4,14 +4,29 @@ import numpy as np
 
 
 def get_max_component_indices(x):
-    '''Get the maximum component indices.'''
+    '''Returns the indices of the maximum components.
+
+    Args:
+        x: Input array.
+
+    Returns:
+        The resulting indices.
+    '''
     inds1 = x.argmax(axis=-1)
     inds2 = np.indices(inds1.shape)
     return tuple(np.concatenate((inds2, inds1[None, ...])))
 
 
 def remove_component(x, *, indices):
-    '''Removes a component at the specified index.'''
+    '''Removes components at the specified indices.
+
+    Args:
+        x: Input array.
+        indices: Indices refers to components to remove from `x`.
+
+    Returns:
+        Returns a new array excluded by `indices`.
+    '''
     ma = np.ma.array(x, mask=False)
     ma.mask[indices] = True
     shape = x.shape[:-1] + (x.shape[-1] - 1,)
@@ -30,7 +45,5 @@ def remap(x, src_min, src_max, dst_min, dst_max):
 
     Returns:
         The resulting value.
-
-    Examples:
     '''
     return (x - src_min) * ((dst_max - dst_min) / (src_max - src_min)) + dst_min
