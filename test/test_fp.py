@@ -9,6 +9,15 @@ from fpq.fp import *
 
 class TestFp(TestCase):
 
+    def test__can_express_norm(self):
+        import fpq.fp
+        self.assertTrue(fpq.fp._can_express_norm(11, np.float16))
+        self.assertFalse(fpq.fp._can_express_norm(12, np.float16))
+        self.assertTrue(fpq.fp._can_express_norm(24, np.float32))
+        self.assertFalse(fpq.fp._can_express_norm(25, np.float32))
+        self.assertTrue(fpq.fp._can_express_norm(53, np.float64))
+        self.assertFalse(fpq.fp._can_express_norm(54, np.float64))
+
     def test_encoding_decoding_between_fp16_and_uint16(self):
         dtypes = (np.float16, np.uint16)
         nbits = 12

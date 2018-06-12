@@ -34,8 +34,3 @@ def remap(x, src_min, src_max, dst_min, dst_max):
     Examples:
     '''
     return (x - src_min) * ((dst_max - dst_min) / (src_max - src_min)) + dst_min
-
-
-def _can_express_norm(nbits, dtype):
-    '''Can express normalized integers?'''
-    return nbits <= (1 + np.finfo(dtype).nmant)
