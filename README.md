@@ -16,7 +16,11 @@ This package provides modules for manipulating floating point numbers quantizati
 * Supports encoding and decoding between Quaternions and N-bits unsigned integers.  
 
 ## Compatibility
-* Python 3.3+
+fpq works with Python 3.3 or higher.  
+
+## Dependencies
+* NumPy
+* Numba
 
 ## Installation
 ```
@@ -100,7 +104,7 @@ array([[ 0.25679011, -0.15512497,  0.88804308,  0.34838854],
        [ 0.66527395,  0.62596484,  0.40672258,  0.01246335]])
 ```
 
-Here are a few [examples](https://github.com/Hasenpfote/fpq/tree/master/example).  
+[Here](https://github.com/Hasenpfote/fpq/tree/master/example) are a few examples.  
 
 ## Documentation
 For users, docs are now available at https://hasenpfote.github.io/fpq/.

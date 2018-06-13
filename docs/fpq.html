@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>fpq package &#8212; fpq 0.7.0 documentation</title>
+    <title>fpq package &#8212; fpq 0.7.1 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.7.0',
+        VERSION:     '0.7.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.7.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.7.1 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -371,6 +371,9 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-fpq.numba_wrapper">
+<span id="fpq-numba-wrapper-module"></span><h2>fpq.numba_wrapper module<a class="headerlink" href="#module-fpq.numba_wrapper" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-fpq.quaternion">
 <span id="fpq-quaternion-module"></span><h2>fpq.quaternion module<a class="headerlink" href="#module-fpq.quaternion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -434,19 +437,29 @@
 <dl class="function">
 <dt id="fpq.utils.get_max_component_indices">
 <code class="descclassname">fpq.utils.</code><code class="descname">get_max_component_indices</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.get_max_component_indices" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the maximum component indices.</p>
+<dd><p>Returns the indices of the maximum components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – Input array.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The resulting indices.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="function">
+<dl class="attribute">
 <dt id="fpq.utils.remap">
-<code class="descclassname">fpq.utils.</code><code class="descname">remap</code><span class="sig-paren">(</span><em>value</em>, <em>src_min</em>, <em>src_max</em>, <em>dst_min</em>, <em>dst_max</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.remap" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">fpq.utils.</code><code class="descname">remap</code><a class="headerlink" href="#fpq.utils.remap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps values from [<cite>src_min</cite>, <cite>src_max</cite>]  to [<cite>dst_min</cite>, <cite>dst_max</cite>].</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>value</strong> – The incoming value to be converted.</li>
+<li><strong>x</strong> – The incoming value to be converted.</li>
 <li><strong>src_min</strong> – Lower bound of the value current range.</li>
 <li><strong>src_max</strong> – Upper bound of the value current range.</li>
 <li><strong>dst_min</strong> – Lower bound of the value target range.</li>
@@ -459,13 +472,27 @@
 </tr>
 </tbody>
 </table>
-<p>Examples:</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="fpq.utils.remove_component">
 <code class="descclassname">fpq.utils.</code><code class="descname">remove_component</code><span class="sig-paren">(</span><em>x</em>, <em>*</em>, <em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fpq.utils.remove_component" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes a component at the specified index.</p>
+<dd><p>Removes components at the specified indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> – Input array.</li>
+<li><strong>indices</strong> – Indices refers to components to remove from <cite>x</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a new array excluded by <cite>indices</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
@@ -560,7 +587,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.7.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">fpq 0.7.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

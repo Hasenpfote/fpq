@@ -12,6 +12,14 @@ fpq\.fp module
     :undoc-members:
     :show-inheritance:
 
+fpq\.numba\_wrapper module
+--------------------------
+
+.. automodule:: fpq.numba_wrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 fpq\.quaternion module
 ----------------------
 
