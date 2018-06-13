@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
+from .numba_wrapper import jit
 
 
 def get_max_component_indices(x):
@@ -33,6 +34,7 @@ def remove_component(x, *, indices):
     return ma.compressed().reshape(shape)
 
 
+@jit
 def remap(x, src_min, src_max, dst_min, dst_max):
     '''Maps values from [`src_min`, `src_max`]  to [`dst_min`, `dst_max`].
 
