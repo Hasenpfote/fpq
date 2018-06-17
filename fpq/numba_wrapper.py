@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 #  -*- coding: utf-8 -*-
+import numpy as np
 
 
 try:
@@ -24,3 +25,25 @@ except ImportError:
         return wrapper
 
     jit = _identity_decorator
+
+
+def autocast(index_or_function=0):
+    import types
+    if isinstance(index_or_function, types.FunctionType):
+        func = index_or_function
+        index = 0
+    else:
+        func = None
+        index = index_or_function
+
+    def decorator(fn):
+        def wrapper(*args, **kwargs):
+            ret = fn(*args, **kwargs)
+            if isinstance(ret, np.ndarray) or isinstance(ret, np.float16):
+                return ret
+            else:
+                return args[index].dtype.type(ret)
+
+        return wrapper
+
+    return decorator if func is None else decorator(func)
