@@ -39,30 +39,30 @@ class TestUtils(TestCase):
         self.assertTrue(np.array_equal(actual, expected))
 
     def test_remap(self):
-        src_min, src_max = 0., 10.
-        dst_min, dst_max = 0., 1.
-        src_val = 10.
+        src_min, src_max = np.float64(0.), np.float64(10.)
+        dst_min, dst_max = np.float64(0.), np.float64(1.)
+        src_val = np.float64(10.)
         dst_val = remap(src_val, src_min, src_max, dst_min, dst_max)
-        self.assertTrue(isinstance(dst_val, float))
+        self.assertTrue(isinstance(dst_val, np.float64))
         self.assertTrue(dst_min <= dst_val <= dst_max)
 
-        src_min, src_max = -10., 10.
-        dst_min, dst_max = -1., 1.
-        src_val = -10.
+        src_min, src_max = np.float64(-10.), np.float64(10.)
+        dst_min, dst_max = np.float64(-1.), np.float64(1.)
+        src_val = np.float64(-10.)
         dst_val = remap(src_val, src_min, src_max, dst_min, dst_max)
-        self.assertTrue(isinstance(dst_val, float))
+        self.assertTrue(isinstance(dst_val, np.float64))
         self.assertTrue(dst_min <= dst_val <= dst_max)
 
-        src_min, src_max = 0., 10.
-        dst_min, dst_max = 0., 1.
-        src_val = np.array([0., 2.5, 5., 7.5, 10.])
+        src_min, src_max = np.float64(0.), np.float64(10.)
+        dst_min, dst_max = np.float64(0.), np.float64(1.)
+        src_val = np.array([0., 2.5, 5., 7.5, 10.], dtype=np.float64)
         dst_val = remap(src_val, src_min, src_max, dst_min, dst_max)
         self.assertTrue(isinstance(dst_val, np.ndarray))
         self.assertTrue(np.all(dst_val >= dst_min) and np.all(dst_val <= dst_max))
 
-        src_min, src_max = -10., 10.
-        dst_min, dst_max = -1., 1.
-        src_val = np.array([-10, -7.5, -5., -2.5, 0., 2.5, 5., 7.5, 10.])
+        src_min, src_max = np.float64(-10.), np.float64(10.)
+        dst_min, dst_max = np.float64(-1.), np.float64(1.)
+        src_val = np.array([-10, -7.5, -5., -2.5, 0., 2.5, 5., 7.5, 10.], dtype=np.float64)
         dst_val = remap(src_val, src_min, src_max, dst_min, dst_max)
         self.assertTrue(isinstance(dst_val, np.ndarray))
         self.assertTrue(np.all(dst_val >= dst_min) and np.all(dst_val <= dst_max))

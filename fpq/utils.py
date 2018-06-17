@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import numpy as np
-from .numba_wrapper import jit
+from . import numba_wrapper
 
 
 def get_max_component_indices(x):
@@ -34,7 +34,12 @@ def remove_component(x, *, indices):
     return ma.compressed().reshape(shape)
 
 
-@jit
+@numba_wrapper.jit
+def _remap(x, src_min, src_max, dst_min, dst_max):
+    return (x - src_min) * ((dst_max - dst_min) / (src_max - src_min)) + dst_min
+
+
+@numba_wrapper.autocast
 def remap(x, src_min, src_max, dst_min, dst_max):
     '''Maps values from [`src_min`, `src_max`]  to [`dst_min`, `dst_max`].
 
@@ -48,4 +53,4 @@ def remap(x, src_min, src_max, dst_min, dst_max):
     Returns:
         The resulting value.
     '''
-    return (x - src_min) * ((dst_max - dst_min) / (src_max - src_min)) + dst_min
+    return _remap(x, src_min, src_max, dst_min, dst_max)
