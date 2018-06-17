@@ -80,10 +80,10 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_f
     # Decoding for quaternion components.
     dec = decoder(components[1:4], dtype=dtype, nbits=bits_per_component)
 
-    # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
-    src_max = np.reciprocal(np.sqrt(dtype(2.)))
-    src_min = -src_max
-    dec = utils.remap(dec, dtype(-1.), dtype(1.), src_min, src_max)
+    # [-1, +1] -> [-1/sqrt(2), +1/sqrt(2)]
+    dst_max = np.reciprocal(np.sqrt(dtype(2.)))
+    dst_min = -dst_max
+    dec = utils.remap(dec, dtype(-1.), dtype(1.), dst_min, dst_max)
 
     c0 = np.sqrt(dtype(1.) - np.square(dec[0]) - np.square(dec[1]) - np.square(dec[2]))
     c1 = dec[0]
