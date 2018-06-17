@@ -3,6 +3,7 @@
 import numpy as np
 from . import utils
 from . import fp
+from . import numba_wrapper
 
 
 def is_valid_format(dtype_f, dtype_u, nbits):
@@ -76,6 +77,28 @@ def _decode_uint_to_fp(x, *, dtype, nbits):
     return dec
 
 
+@numba_wrapper.jit
+def _l2norm(v):
+    return np.sqrt(np.square(v[..., 0]) + np.square(v[..., 1]) + np.square(v[..., 2]))
+
+
+@numba_wrapper.autocast
+def l2norm(v):
+    '''Calculates the L2 norm.'''
+    return _l2norm(v)
+
+
+@numba_wrapper.jit
+def __solve_remaining_component(x):
+    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]))
+
+
+@numba_wrapper.autocast
+def _solve_remaining_component(x):
+    '''Solve a remaining component of a unit vector'''
+    return __solve_remaining_component(x)
+
+
 def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_std_snorm):
     '''Encode vectors to unsigned integers.
 
@@ -98,7 +121,7 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
     max_abs_inds = utils.get_max_component_indices(np.fabs(v))
 
     # Normalize the vectors.
-    norm = np.linalg.norm(v, axis=-1)
+    norm = l2norm(v)
     nv = v / norm[..., None]
 
     # The sign of the maximum absolute component.
@@ -152,7 +175,7 @@ def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=fp.decode_std_s
 
     # Decoding for vector components.
     dec = decoder(components[1:3], dtype=dtype, nbits=breakdown[1])
-    c0 = (np.sqrt(dtype(1.) - np.square(dec[0]) - np.square(dec[1]))) * dec_n
+    c0 = _solve_remaining_component(dec) * dec_n
     c1 = dec[0] * dec_n
     c2 = dec[1] * dec_n
 

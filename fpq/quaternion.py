@@ -3,6 +3,18 @@
 import numpy as np
 from . import utils
 from . import fp
+from . import numba_wrapper
+
+
+@numba_wrapper.jit
+def __solve_remaining_component(x):
+    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]) - np.square(x[2]))
+
+
+@numba_wrapper.autocast
+def _solve_remaining_component(x):
+    '''Solve a remaining component of a unit vector'''
+    return __solve_remaining_component(x)
 
 
 def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm):
@@ -85,7 +97,7 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_f
     dst_min = -dst_max
     dec = utils.remap(dec, dtype(-1.), dtype(1.), dst_min, dst_max)
 
-    c0 = np.sqrt(dtype(1.) - np.square(dec[0]) - np.square(dec[1]) - np.square(dec[2]))
+    c0 = _solve_remaining_component(dec)
     c1 = dec[0]
     c2 = dec[1]
     c3 = dec[2]
