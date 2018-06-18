@@ -6,15 +6,11 @@ from . import fp
 from . import numba_wrapper
 
 
-@numba_wrapper.jit
-def __solve_remaining_component(x):
-    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]) - np.square(x[2]))
-
-
 @numba_wrapper.autocast
+@numba_wrapper.jit
 def _solve_remaining_component(x):
     '''Solve a remaining component of a unit vector'''
-    return __solve_remaining_component(x)
+    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]) - np.square(x[2]))
 
 
 def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm):

@@ -77,26 +77,18 @@ def _decode_uint_to_fp(x, *, dtype, nbits):
     return dec
 
 
+@numba_wrapper.autocast
 @numba_wrapper.jit
-def _l2norm(v):
+def l2norm(v):
+    '''Calculates the L2 norm.'''
     return np.sqrt(np.square(v[..., 0]) + np.square(v[..., 1]) + np.square(v[..., 2]))
 
 
 @numba_wrapper.autocast
-def l2norm(v):
-    '''Calculates the L2 norm.'''
-    return _l2norm(v)
-
-
 @numba_wrapper.jit
-def __solve_remaining_component(x):
-    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]))
-
-
-@numba_wrapper.autocast
 def _solve_remaining_component(x):
     '''Solve a remaining component of a unit vector'''
-    return __solve_remaining_component(x)
+    return np.sqrt(x.dtype.type(1.) - np.square(x[0]) - np.square(x[1]))
 
 
 def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_std_snorm):
