@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 #  -*- coding: utf-8 -*-
+import types
+import functools
 import numpy as np
 
 
 try:
+    from numba.targets.registry import CPUDispatcher
     from numba import jit
+
+    IS_ENABLED_NUMBA = True
+
 except ImportError:
     import warnings
     warning_text = \
@@ -15,7 +21,6 @@ except ImportError:
     warnings.warn(warning_text)
 
     def _identity_decorator(*args, **kwargs):
-        import types
         if (len(args) == 1) and isinstance(args[0], types.FunctionType):
             return args[0]
 
@@ -26,10 +31,12 @@ except ImportError:
 
     jit = _identity_decorator
 
+    IS_ENABLED_NUMBA = False
+
 
 def autocast(index_or_function=0):
-    import types
-    if isinstance(index_or_function, types.FunctionType):
+    if isinstance(index_or_function, types.FunctionType) \
+            or (IS_ENABLED_NUMBA and isinstance(index_or_function, CPUDispatcher)):
         func = index_or_function
         index = 0
     else:
@@ -37,6 +44,7 @@ def autocast(index_or_function=0):
         index = index_or_function
 
     def decorator(fn):
+        @functools.wraps(fn)
         def wrapper(*args, **kwargs):
             ret = fn(*args, **kwargs)
             if isinstance(ret, np.ndarray) or isinstance(ret, np.float16):
@@ -44,6 +52,6 @@ def autocast(index_or_function=0):
             else:
                 return args[index].dtype.type(ret)
 
-        return wrapper
+        return wrapper if IS_ENABLED_NUMBA else fn
 
     return decorator if func is None else decorator(func)
