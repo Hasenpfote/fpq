@@ -110,7 +110,7 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
     assert is_valid_format(v.dtype.type, dtype, nbits), 'Not a valid format.'
 
     # Get the maximum absolute component indices.
-    max_abs_inds = utils.get_max_component_indices(np.fabs(v))
+    max_abs_inds = utils.get_max_component_indices(np.absolute(v))
 
     # Normalize the vectors.
     norm = l2norm(v)

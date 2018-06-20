@@ -35,7 +35,7 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm
 
     nbits_per_component = ((dtype().dtype.itemsize * 8) - 2) // 3
 
-    max_abs_inds = utils.get_max_component_indices(np.fabs(q))
+    max_abs_inds = utils.get_max_component_indices(np.absolute(q))
     sign = np.sign(q[max_abs_inds])
     remaining = sign[..., None] * utils.remove_component(q, indices=max_abs_inds)
 

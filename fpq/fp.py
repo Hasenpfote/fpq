@@ -187,7 +187,7 @@ def encode_fp_to_std_snorm(x, *, dtype=np.uint8, nbits=None):
         'Can\'t be expressed with the specified number of bits.'
 
     sign = np.signbit(x)
-    enc = encode_fp_to_std_unorm(np.fabs(x), dtype=dtype, nbits=nbits-1)
+    enc = encode_fp_to_std_unorm(np.absolute(x), dtype=dtype, nbits=nbits-1)
     return sign | (enc << dtype(1))
 
 
