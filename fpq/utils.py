@@ -51,3 +51,11 @@ def remap(x, src_min, src_max, dst_min, dst_max):
         The resulting value.
     '''
     return (x - src_min) * ((dst_max - dst_min) / (src_max - src_min)) + dst_min
+
+
+@numba_wrapper.avoid_mapping_to_py_types
+@numba_wrapper.avoid_non_supported_types
+@numba_wrapper.jit
+def rint(x):
+    '''Wrapper function for `numpy.rint`.'''
+    return np.rint(x)
