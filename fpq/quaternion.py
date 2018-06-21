@@ -6,7 +6,8 @@ from . import fp
 from . import numba_wrapper
 
 
-@numba_wrapper.autocast
+@numba_wrapper.avoid_mapping_to_py_types
+@numba_wrapper.avoid_non_supported_types
 @numba_wrapper.jit
 def _solve_remaining_component(x):
     '''Solve a remaining component of a unit vector'''

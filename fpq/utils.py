@@ -34,7 +34,8 @@ def remove_component(x, *, indices):
     return ma.compressed().reshape(shape)
 
 
-@numba_wrapper.autocast
+@numba_wrapper.avoid_mapping_to_py_types
+@numba_wrapper.avoid_non_supported_types
 @numba_wrapper.jit
 def remap(x, src_min, src_max, dst_min, dst_max):
     '''Maps values from [`src_min`, `src_max`]  to [`dst_min`, `dst_max`].

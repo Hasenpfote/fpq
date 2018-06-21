@@ -77,14 +77,16 @@ def _decode_uint_to_fp(x, *, dtype, nbits):
     return dec
 
 
-@numba_wrapper.autocast
+@numba_wrapper.avoid_mapping_to_py_types
+@numba_wrapper.avoid_non_supported_types
 @numba_wrapper.jit
 def l2norm(v):
     '''Calculates the L2 norm.'''
     return np.sqrt(np.square(v[..., 0]) + np.square(v[..., 1]) + np.square(v[..., 2]))
 
 
-@numba_wrapper.autocast
+@numba_wrapper.avoid_mapping_to_py_types
+@numba_wrapper.avoid_non_supported_types
 @numba_wrapper.jit
 def _solve_remaining_component(x):
     '''Solve a remaining component of a unit vector'''
