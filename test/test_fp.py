@@ -148,10 +148,10 @@ class TestFp(TestCase):
 
         expected_enc = dtypes[1](0b01111)
         expected_dec = dtypes[0](1.)
-        enc = encode_fp_to_d3d_snorm(expected_dec, dtype=dtypes[1], nbits=nbits)
+        enc = encode_fp_to_ogl_snorm(expected_dec, dtype=dtypes[1], nbits=nbits)
         self.assertTrue(isinstance(enc, dtypes[1]))
         self.assertTrue(np.array_equal(enc, expected_enc))
-        dec = decode_d3d_snorm_to_fp(enc, dtype=dtypes[0], nbits=nbits)
+        dec = decode_ogl_snorm_to_fp(enc, dtype=dtypes[0], nbits=nbits)
         self.assertTrue(isinstance(dec, dtypes[0]))
         self.assertTrue(np.allclose(dec, expected_dec, rtol=0., atol=1e-1))
 
