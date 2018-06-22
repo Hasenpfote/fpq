@@ -287,7 +287,7 @@ def decode_ogl_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     mask = np.invert(x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits))
     max_uint = x.dtype.type((1 << (nbits-1)) - 1)
     temp = x | (sign * mask)
-    temp = dtype(np.dtype(x.dtype.name[1:]).type(temp)) / dtype(max_uint)
+    temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
     return np.maximum(temp, dtype(-1.))
 
 
@@ -346,5 +346,5 @@ def decode_d3d_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     mask = np.invert(x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits))
     max_uint = x.dtype.type((1 << (nbits-1)) - 1)
     temp = x | (sign * mask)
-    temp = dtype(np.dtype(x.dtype.name[1:]).type(temp)) / dtype(max_uint)
+    temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
     return np.maximum(temp, dtype(-1.))
