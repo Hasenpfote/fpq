@@ -2,6 +2,7 @@
 #  -*- coding: utf-8 -*-
 import types
 import functools
+import inspect
 import numpy as np
 
 
@@ -34,15 +35,20 @@ except ImportError:
     IS_ENABLED_NUMBA = False
 
 
-def avoid_mapping_to_py_types(index_or_function=0):
+def avoid_mapping_to_py_types(name_or_function=None):
     '''Avoid mapping to Python types.'''
-    if isinstance(index_or_function, types.FunctionType) \
-            or (IS_ENABLED_NUMBA and isinstance(index_or_function, CPUDispatcher)):
-        func = index_or_function
-        index = 0
-    else:
+    if name_or_function is None:
+        is_omitted = True
         func = None
-        index = index_or_function
+    elif isinstance(name_or_function, str):
+        is_omitted = False
+        func = None
+    elif isinstance(name_or_function, types.FunctionType) \
+            or (IS_ENABLED_NUMBA and isinstance(name_or_function, CPUDispatcher)):
+        is_omitted = True
+        func = name_or_function
+    else:
+        raise TypeError('Type {} is not supported.'.format(type(name_or_function)))
 
     def decorator(fn):
         @functools.wraps(fn)
@@ -53,20 +59,31 @@ def avoid_mapping_to_py_types(index_or_function=0):
             else:
                 return args[index].dtype.type(ret)
 
+        if is_omitted:
+            index = 0
+        else:
+            sig = inspect.signature(fn)
+            index = list(sig.parameters.keys()).index(name_or_function)
+
         return wrapper if IS_ENABLED_NUMBA else fn
 
     return decorator if func is None else decorator(func)
 
 
-def avoid_non_supported_types(index_or_function=0):
+def avoid_non_supported_types(name_or_function=None):
     '''Avoid non-supported types.'''
-    if isinstance(index_or_function, types.FunctionType) \
-            or (IS_ENABLED_NUMBA and isinstance(index_or_function, CPUDispatcher)):
-        func = index_or_function
-        index = 0
-    else:
+    if name_or_function is None:
+        is_omitted = True
         func = None
-        index = index_or_function
+    elif isinstance(name_or_function, str):
+        is_omitted = False
+        func = None
+    elif isinstance(name_or_function, types.FunctionType) \
+            or (IS_ENABLED_NUMBA and isinstance(name_or_function, CPUDispatcher)):
+        is_omitted = True
+        func = name_or_function
+    else:
+        raise TypeError('Type {} is not supported.'.format(type(name_or_function)))
 
     def decorator(fn):
         @functools.wraps(fn)
@@ -75,6 +92,12 @@ def avoid_non_supported_types(index_or_function=0):
                 return fn.py_func(*args, **kwargs)
             else:
                 return fn(*args, **kwargs)
+
+        if is_omitted:
+            index = 0
+        else:
+            sig = inspect.signature(fn)
+            index = list(sig.parameters.keys()).index(name_or_function)
 
         return wrapper if IS_ENABLED_NUMBA else fn
 
