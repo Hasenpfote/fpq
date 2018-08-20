@@ -1,6 +1,7 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/Hasenpfote/fpq/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.org/Hasenpfote/fpq)
-[![PyPI version](https://badge.fury.io/py/fpq.svg)](https://badge.fury.io/py/fpq)  
+[![PyPI version](https://badge.fury.io/py/fpq.svg)](https://badge.fury.io/py/fpq)
+[![Pyversions](https://img.shields.io/pypi/pyversions/fpq.svg?style=flat)](https://img.shields.io/pypi/pyversions/fpq.svg?style=flat)
 
 fpq
 ===

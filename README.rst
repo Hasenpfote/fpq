@@ -1,6 +1,7 @@
 `License <https://github.com/Hasenpfote/fpq/blob/master/LICENSE>`__
 `Build Status <https://travis-ci.org/Hasenpfote/fpq>`__ `PyPI
 version <https://badge.fury.io/py/fpq>`__
+`Pyversions <https://img.shields.io/pypi/pyversions/fpq.svg?style=flat>`__
 
 fpq
 ===
