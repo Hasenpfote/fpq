@@ -3,3 +3,7 @@
 /dist
 /fpq.egg-info
 /temp
+/.tox
+/cover
+.coverage
+.noseids
