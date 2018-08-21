@@ -17,7 +17,7 @@ This package provides modules for manipulating floating point numbers quantizati
 * Supports encoding and decoding between Quaternions and N-bits unsigned integers.  
 
 ## Compatibility
-fpq works with Python 3.3 or higher.  
+fpq works with Python 3.4 or higher.  
 
 ## Dependencies
 * NumPy

@@ -28,7 +28,7 @@ Feature
 Compatibility
 -------------
 
-fpq works with Python 3.3 or higher.
+fpq works with Python 3.4 or higher.
 
 Dependencies
 ------------
