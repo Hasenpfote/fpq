@@ -56,6 +56,6 @@ def remap(x, src_min, src_max, dst_min, dst_max):
 @numba_wrapper.avoid_mapping_to_py_types
 @numba_wrapper.avoid_non_supported_types
 @numba_wrapper.jit
-def rint(x):
+def rint(x, out=None):
     '''Wrapper function for `numpy.rint`.'''
-    return np.rint(x)
+    return np.rint(x, out=out)
