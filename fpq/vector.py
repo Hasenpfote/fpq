@@ -124,10 +124,10 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
     breakdown = calc_breakdown_of_uint(dtype, nbits)
 
     # Encoding for vector components.
-    remaining = utils.remove_component(nv, indices=max_abs_inds)
-    remaining *= sign[..., None]
+    rest_components = utils.remove_component(nv, indices=max_abs_inds)
+    rest_components *= sign[..., None]
 
-    enc = encoder(remaining, dtype=dtype, nbits=breakdown[1])
+    enc = encoder(rest_components, dtype=dtype, nbits=breakdown[1])
     enc[..., 0] <<= dtype(sum(breakdown[2:]))
     enc[..., 1] <<= dtype(sum(breakdown[3:]))
 
