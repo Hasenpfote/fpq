@@ -96,7 +96,7 @@ def encode_fp_to_std_unorm(x, *, dtype=np.uint8, nbits=None):
 
         >>> fp = np.array([[0., 0.5, 1.], [1., 0.5, 0.]], dtype=np.float32)
         >>> enc = encode_fp_to_std_unorm(fp, dtype=np.uint16, nbits=16)
-   '''
+    '''
     assert (x.dtype.kind == 'f'), \
         '`dtype` of the argument `x` must be floating point types.'
     assert (dtype().dtype.kind == 'u'), \
@@ -155,7 +155,10 @@ def decode_std_unorm_to_fp(x, *, dtype=np.float32, nbits=None):
         'Can\'t be expressed with the specified number of bits.'
 
     max_uint = x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits)
-    return dtype(x) / dtype(max_uint)
+    # result = dtype(x) / dtype(max_uint)
+    result = dtype(x)
+    result /= dtype(max_uint)
+    return result
 
 
 def encode_fp_to_std_snorm(x, *, dtype=np.uint8, nbits=None):
@@ -191,9 +194,11 @@ def encode_fp_to_std_snorm(x, *, dtype=np.uint8, nbits=None):
     assert _can_express_norm(nbits-1, x.dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
-    sign = np.signbit(x)
-    enc = encode_fp_to_std_unorm(np.absolute(x), dtype=dtype, nbits=nbits-1)
-    return sign | (enc << dtype(1))
+    # (enc << dtype(1)) | np.signbit(x)
+    result = encode_fp_to_std_unorm(np.absolute(x), dtype=dtype, nbits=nbits-1)
+    result <<= dtype(1)
+    result |= np.signbit(x)
+    return result
 
 
 def decode_std_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
@@ -232,9 +237,14 @@ def decode_std_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     assert _can_express_norm(nbits-1, dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
-    dec = decode_std_unorm_to_fp(x >> x.dtype.type(1), dtype=dtype, nbits=nbits-1)
-    sign = dtype(x & x.dtype.type(0x1)) * dtype(-2.) + dtype(1.)
-    return dec * sign
+    # sign = dtype(x & x.dtype.type(0x1)) * dtype(-2.) + dtype(1.)
+    sign = dtype(x & x.dtype.type(0x1))
+    sign *= dtype(-2.)
+    sign += dtype(1.)
+    # result = dec * sign
+    result = decode_std_unorm_to_fp(x >> x.dtype.type(1), dtype=dtype, nbits=nbits - 1)
+    result *= sign
+    return result
 
 
 def encode_fp_to_ogl_snorm(x, *, dtype=np.uint8, nbits=None):
@@ -267,7 +277,10 @@ def encode_fp_to_ogl_snorm(x, *, dtype=np.uint8, nbits=None):
     temp = x * x.dtype.type(max_uint)
     out = temp if isinstance(temp, np.ndarray) else None
 
-    return dtype(utils.rint(temp, out=out)) & mask
+    # result = dtype(utils.rint(temp, out=out)) & mask
+    result = dtype(utils.rint(temp, out=out))
+    result &= mask
+    return result
 
 
 def decode_ogl_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
@@ -293,12 +306,21 @@ def decode_ogl_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     assert _can_express_norm(nbits-1, dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
-    sign = x >> x.dtype.type(nbits-1)
+    # sign = x >> x.dtype.type(nbits-1) * mask
+    # uint_x = sign | x
     mask = np.invert(x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits))
+    uint_x = x >> x.dtype.type(nbits-1)
+    uint_x *= mask
+    uint_x |= x
+
+    # Avoids memory allocation when the result is an array.
+    # temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
     max_uint = x.dtype.type((1 << (nbits-1)) - 1)
-    temp = x | (sign * mask)
-    temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
-    return np.maximum(temp, dtype(-1.))
+    temp = dtype(uint_x.view(x.dtype.name[1:]))
+    temp /= dtype(max_uint)
+    out = temp if isinstance(temp, np.ndarray) else None
+
+    return np.maximum(temp, dtype(-1.), out=out)
 
 
 def encode_fp_to_d3d_snorm(x, *, dtype=np.uint8, nbits=None):
@@ -331,7 +353,10 @@ def encode_fp_to_d3d_snorm(x, *, dtype=np.uint8, nbits=None):
     temp = x * x.dtype.type(max_uint)
     out = temp if isinstance(temp, np.ndarray) else None
 
-    return dtype(utils.rint(temp, out=out)) & mask
+    # result = dtype(utils.rint(temp, out=out)) & mask
+    result = dtype(utils.rint(temp, out=out))
+    result &= mask
+    return result
 
 
 def decode_d3d_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
@@ -357,9 +382,18 @@ def decode_d3d_snorm_to_fp(x, *, dtype=np.float32, nbits=None):
     assert _can_express_norm(nbits-1, dtype), \
         'Can\'t be expressed with the specified number of bits.'
 
-    sign = x >> x.dtype.type(nbits-1)
+    # sign = x >> x.dtype.type(nbits-1) * mask
+    # uint_x = sign | x
     mask = np.invert(x.dtype.type(np.iinfo(x.dtype).max) >> x.dtype.type(max_nbits - nbits))
+    uint_x = x >> x.dtype.type(nbits-1)
+    uint_x *= mask
+    uint_x |= x
+
+    # Avoids memory allocation when the result is an array.
+    # temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
     max_uint = x.dtype.type((1 << (nbits-1)) - 1)
-    temp = x | (sign * mask)
-    temp = dtype(temp.view(x.dtype.name[1:])) / dtype(max_uint)
-    return np.maximum(temp, dtype(-1.))
+    temp = dtype(uint_x.view(x.dtype.name[1:]))
+    temp /= dtype(max_uint)
+    out = temp if isinstance(temp, np.ndarray) else None
+
+    return np.maximum(temp, dtype(-1.), out=out)
