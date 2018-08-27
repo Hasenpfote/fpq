@@ -124,17 +124,26 @@ def encode_vec_to_uint(v, *, dtype=np.uint64, nbits=20, encoder=fp.encode_fp_to_
     breakdown = calc_breakdown_of_uint(dtype, nbits)
 
     # Encoding for vector components.
-    remaining = utils.remove_component(nv, indices=max_abs_inds) * sign[..., None]
+    remaining = utils.remove_component(nv, indices=max_abs_inds)
+    remaining *= sign[..., None]
+
     enc = encoder(remaining, dtype=dtype, nbits=breakdown[1])
+    enc[..., 0] <<= dtype(sum(breakdown[2:]))
+    enc[..., 1] <<= dtype(sum(breakdown[3:]))
 
     # Encoding for the vector norm.
     norm *= sign
     enc_n = _encode_fp_to_uint(norm, dtype=dtype, nbits=breakdown[3])
 
-    return (dtype(max_abs_inds[-1]) << dtype(sum(breakdown[1:]))) \
-           | (enc[..., 0] << dtype(sum(breakdown[2:]))) \
-           | (enc[..., 1] << dtype(sum(breakdown[3:]))) \
-           | enc_n
+    # result = (dtype(max_abs_inds[-1]) << dtype(sum(breakdown[1:])))
+    #     | enc[..., 0] | enc[..., 1] | enc_n
+    result = dtype(max_abs_inds[-1])
+    result <<= dtype(sum(breakdown[1:]))
+    result |= enc[..., 0]
+    result |= enc[..., 1]
+    result |= enc_n
+
+    return result
 
 
 def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=fp.decode_std_snorm_to_fp):
@@ -162,18 +171,25 @@ def decode_uint_to_vec(v, *, dtype=np.float64, nbits=20, decoder=fp.decode_std_s
     masks = np.invert(v.dtype.type(np.iinfo(v.dtype).max) << np.array(breakdown, dtype=v.dtype))
 
     temp = (...,) + (None,) * v.ndim
-    components = (v >> shifts[temp]) & masks[temp]
+    components = (v >> shifts[temp])
+    components &= masks[temp]
 
     # Decoding for the vector norm.
     dec_n = _decode_uint_to_fp(components[3], dtype=dtype, nbits=breakdown[3])
 
     # Decoding for vector components.
     dec = decoder(components[1:3], dtype=dtype, nbits=breakdown[1])
-    c0 = _solve_remaining_component(dec) * dec_n
-    c1 = dec[0] * dec_n
-    c2 = dec[1] * dec_n
+
+    c0 = _solve_remaining_component(dec)
+    c0 *= dec_n
+
+    dec *= dec_n
+    c1 = dec[0]
+    c2 = dec[1]
 
     max_c = components[0]
-    permutation = [i for i in range(1, v.ndim+1)] + [0,]
-    return np.where(max_c == 0, (c0, c1, c2),
-                    np.where(max_c == 1, (c1, c0, c2), (c1, c2, c0))).transpose(permutation)
+    temp = np.where(max_c == 1, (c1, c0, c2), (c1, c2, c0))
+    temp = np.where(max_c == 0, (c0, c1, c2), temp)
+    order = [i for i in range(1, v.ndim+1)] + [0, ]
+
+    return temp.transpose(order)
