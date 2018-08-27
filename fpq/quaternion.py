@@ -38,19 +38,28 @@ def encode_quat_to_uint(q, *, dtype=np.uint64, encoder=fp.encode_fp_to_std_snorm
 
     max_abs_inds = utils.get_max_component_indices(np.absolute(q))
     sign = np.sign(q[max_abs_inds])
-    remaining = sign[..., None] * utils.remove_component(q, indices=max_abs_inds)
+
+    rest_components = utils.remove_component(q, indices=max_abs_inds)
+    rest_components *= sign[..., None]
 
     # [-1/sqrt(2), +1/sqrt(2)] -> [-1, +1]
     src_max = np.reciprocal(np.sqrt(q.dtype.type(2.)))
     src_min = -src_max
-    remaining = utils.remap(remaining, src_min, src_max, q.dtype.type(-1.), q.dtype.type(1.))
+    rest_components = utils.remap(rest_components, src_min, src_max, q.dtype.type(-1.), q.dtype.type(1.))
 
-    enc = encoder(remaining, dtype=dtype, nbits=nbits_per_component)
+    enc = encoder(rest_components, dtype=dtype, nbits=nbits_per_component)
+    enc[..., 0] <<= dtype(nbits_per_component * 2)
+    enc[..., 1] <<= dtype(nbits_per_component)
 
-    return (dtype(max_abs_inds[-1]) << dtype(nbits_per_component * 3)) \
-           | (enc[..., 0] << dtype(nbits_per_component * 2)) \
-           | (enc[..., 1] << dtype(nbits_per_component)) \
-           | enc[..., 2]
+    # result = (dtype(max_abs_inds[-1]) << dtype(nbits_per_component * 3))
+    #     | enc[..., 0] | enc[..., 1] | enc[..., 2]
+    result = dtype(max_abs_inds[-1])
+    result <<= dtype(nbits_per_component * 3)
+    result |= enc[..., 0]
+    result |= enc[..., 1]
+    result |= enc[..., 2]
+
+    return result
 
 
 def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_fp):
@@ -84,7 +93,8 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_f
     masks = np.array([0x3, mask, mask, mask], dtype=q.dtype)
 
     temp = (...,) + (None,) * q.ndim
-    components = (q >> shifts[temp]) & masks[temp]
+    components = (q >> shifts[temp])
+    components &= masks[temp]
 
     # Decoding for quaternion components.
     dec = decoder(components[1:4], dtype=dtype, nbits=bits_per_component)
@@ -100,7 +110,9 @@ def decode_uint_to_quat(q, *, dtype=np.float64, decoder=fp.decode_std_snorm_to_f
     c3 = dec[2]
 
     max_c = components[0]
-    permutation = [i for i in range(1, q.ndim + 1)] + [0, ]
-    return np.where(max_c == 0, (c0, c1, c2, c3),
-                    np.where(max_c == 1, (c1, c0, c2, c3),
-                             np.where(max_c == 2, (c1, c2, c0, c3), (c1, c2, c3, c0)))).transpose(permutation)
+    temp = np.where(max_c == 2, (c1, c2, c0, c3), (c1, c2, c3, c0))
+    temp = np.where(max_c == 1, (c1, c0, c2, c3), temp)
+    temp = np.where(max_c == 0, (c0, c1, c2, c3), temp)
+    order = [i for i in range(1, q.ndim + 1)] + [0, ]
+
+    return temp.transpose(order)
