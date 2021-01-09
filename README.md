@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/Hasenpfote/fpq/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.org/Hasenpfote/fpq)
+[![Build Status](https://travis-ci.com/Hasenpfote/fpq.svg?branch=master)](https://travis-ci.com/Hasenpfote/fpq)
 [![PyPI version](https://badge.fury.io/py/fpq.svg)](https://badge.fury.io/py/fpq)
 [![Pyversions](https://img.shields.io/pypi/pyversions/fpq.svg?style=flat)](https://img.shields.io/pypi/pyversions/fpq.svg?style=flat)
 
@@ -10,14 +10,14 @@ fpq
 This package provides modules for manipulating floating point numbers quantization using NumPy.
 
 ## Feature
-* Supports multidimensional arrays.  
-* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits unsigned normalized integers.  
-* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits signed normalized integers.  
-* Supports encoding and decoding between 3d-vectors and N-bits unsigned integers.  
-* Supports encoding and decoding between Quaternions and N-bits unsigned integers.  
+* Supports multidimensional arrays.
+* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits unsigned normalized integers.
+* Supports encoding and decoding between 64/32/16-bits floating point numbers and N-bits signed normalized integers.
+* Supports encoding and decoding between 3d-vectors and N-bits unsigned integers.
+* Supports encoding and decoding between Quaternions and N-bits unsigned integers.
 
 ## Compatibility
-fpq works with Python 3.4 or higher.  
+fpq works with Python 3.4 or higher.
 
 ## Dependencies
 * NumPy
@@ -63,7 +63,7 @@ array([-1.        , -0.26666668,  0.        ,  0.        ,  0.26666668,
         1.        ], dtype=float32)
 ```
 
-encoding and decoding between 3d-vectors and 64-bits(2:20:20:22) unsigned integers.  
+encoding and decoding between 3d-vectors and 64-bits(2:20:20:22) unsigned integers.
 ```python
 >>> import math
 >>> import random
@@ -105,14 +105,14 @@ array([[ 0.25679011, -0.15512497,  0.88804308,  0.34838854],
        [ 0.66527395,  0.62596484,  0.40672258,  0.01246335]])
 ```
 
-[Here](https://github.com/Hasenpfote/fpq/tree/master/example) are a few examples.  
+[Here](https://github.com/Hasenpfote/fpq/tree/master/example) are a few examples.
 
 ## Documentation
 For users, docs are now available at https://hasenpfote.github.io/fpq/.
 
 ## References and links
-[D3D: Data Conversion Rules](https://msdn.microsoft.com/en-us/library/windows/desktop/dd607323(v=vs.85).aspx)  
-[OGL: Normalized Integer](https://www.khronos.org/opengl/wiki/Normalized_Integer)  
+[D3D: Data Conversion Rules](https://msdn.microsoft.com/en-us/library/windows/desktop/dd607323(v=vs.85).aspx)
+[OGL: Normalized Integer](https://www.khronos.org/opengl/wiki/Normalized_Integer)
 [Vulkan: Fixed-Point Data Conversions](http://vulkan-spec-chunked.ahcox.com/ch02s08.html)
 
 ## License
