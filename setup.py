@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 from setuptools import setup
+import sys
 
 
 # Get version without importing, which avoids dependency issues
@@ -18,8 +19,13 @@ def _long_description():
 
 required=[
     'numpy>=1.11.2',
-    'numba>=0.38.0; python_version>="3.5"',
 ]
+
+if sys.version_info >= (3, 5):
+    required.extend([
+        'numba>=0.38.0, <0.44.0',
+        'llvmlite<0.29.0'
+    ])
 
 
 if __name__ == '__main__':
