@@ -1,7 +1,4 @@
-`License <https://github.com/Hasenpfote/fpq/blob/master/LICENSE>`__
-`Build Status <https://travis-ci.org/Hasenpfote/fpq>`__ `PyPI
-version <https://badge.fury.io/py/fpq>`__
-`Pyversions <https://img.shields.io/pypi/pyversions/fpq.svg?style=flat>`__
+|License| |Build Status| |PyPI version| |Pyversions|
 
 fpq
 ===
@@ -141,14 +138,23 @@ For users, docs are now available at https://hasenpfote.github.io/fpq/.
 References and links
 --------------------
 
-| `D3D: Data Conversion
-  Rules <https://msdn.microsoft.com/en-us/library/windows/desktop/dd607323(v=vs.85).aspx>`__
-| `OGL: Normalized
-  Integer <https://www.khronos.org/opengl/wiki/Normalized_Integer>`__
-| `Vulkan: Fixed-Point Data
-  Conversions <http://vulkan-spec-chunked.ahcox.com/ch02s08.html>`__
+`D3D: Data Conversion
+Rules <https://msdn.microsoft.com/en-us/library/windows/desktop/dd607323(v=vs.85).aspx>`__
+`OGL: Normalized
+Integer <https://www.khronos.org/opengl/wiki/Normalized_Integer>`__
+`Vulkan: Fixed-Point Data
+Conversions <http://vulkan-spec-chunked.ahcox.com/ch02s08.html>`__
 
 License
 -------
 
 This software is released under the MIT License, see LICENSE.
+
+.. |License| image:: https://img.shields.io/badge/license-MIT-brightgreen.svg
+   :target: https://github.com/Hasenpfote/fpq/blob/master/LICENSE
+.. |Build Status| image:: https://travis-ci.com/Hasenpfote/fpq.svg?branch=master
+   :target: https://travis-ci.com/Hasenpfote/fpq
+.. |PyPI version| image:: https://badge.fury.io/py/fpq.svg
+   :target: https://badge.fury.io/py/fpq
+.. |Pyversions| image:: https://img.shields.io/pypi/pyversions/fpq.svg?style=flat
+   :target: https://img.shields.io/pypi/pyversions/fpq.svg?style=flat
